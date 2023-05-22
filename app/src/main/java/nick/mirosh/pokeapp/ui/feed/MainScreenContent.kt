@@ -14,10 +14,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import nick.mirosh.pokeapp.ui.MainViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import nick.mirosh.pokeapp.entity.ArticleDTO
+import nick.mirosh.pokeapp.ui.MainViewModel
 
 
 @Composable
