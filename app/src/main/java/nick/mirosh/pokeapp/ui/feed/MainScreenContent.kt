@@ -29,7 +29,7 @@ fun MainScreenContent(
     viewModel: MainViewModel = viewModel(),
     onClick: (ArticleDTO) -> Unit
 ) {
-    val articles by viewModel.pokemonList.collectAsStateWithLifecycle()
+    val articles by viewModel.articles.collectAsStateWithLifecycle()
 
     LazyColumn {
         items(articles.size) { index ->
@@ -51,7 +51,7 @@ fun MainScreenContent(
                     contentDescription = "Translated description of what the image contains"
                 )
                 Text(
-                    text = article.title,
+                    text = article.title.orEmpty(),
                     lineHeight = 18.sp,
                     fontSize = 14.sp
 
