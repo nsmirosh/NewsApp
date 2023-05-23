@@ -7,7 +7,7 @@ import javax.inject.Inject
 class NewsRemoteDataSource @Inject constructor() : NewsDataSource {
     override suspend fun getHeadlines(): List<ArticleDTO>? {
         val api = RetrofitClient.instance!!.newsApi
-        val response = api.getHeadlines("ua").execute().body()
+        val response = api.getHeadlines("us").execute().body()
         return response?.articles
     }
 }

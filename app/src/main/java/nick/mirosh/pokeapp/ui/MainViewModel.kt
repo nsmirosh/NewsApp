@@ -26,5 +26,4 @@ class MainViewModel @Inject constructor(private val newsRepository: NewsReposito
             _pokemonList.value = newsRepository.getNewsList(Dispatchers.IO)
         }
     }
-
 }
