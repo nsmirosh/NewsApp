@@ -1,19 +1,22 @@
 package nick.mirosh.pokeapp.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import nick.mirosh.pokeapp.entity.ArticleDTO
+import kotlinx.coroutines.flow.Flow
+import nick.mirosh.pokeapp.entity.DatabaseArticle
 
 @Dao
 interface ArticleDao {
     @Query("SELECT * FROM articles")
-    fun getAll(): List<ArticleDTO>
+    fun getAllArticles(): Flow<List<DatabaseArticle>>
 
-    @Insert
-    fun insertAll(vararg articles: ArticleDTO)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(articles: List<DatabaseArticle>)
 
     @Delete
-    fun delete(article: ArticleDTO)
+    fun delete(article: DatabaseArticle)
 }

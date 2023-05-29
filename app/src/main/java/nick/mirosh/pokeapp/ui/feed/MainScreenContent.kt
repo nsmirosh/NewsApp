@@ -19,7 +19,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import nick.mirosh.pokeapp.entity.ArticleDTO
+import nick.mirosh.pokeapp.entity.Article
+import nick.mirosh.pokeapp.entity.DatabaseArticle
 import nick.mirosh.pokeapp.ui.MainViewModel
 
 
@@ -27,9 +28,9 @@ import nick.mirosh.pokeapp.ui.MainViewModel
 fun MainScreenContent(
     modifier: Modifier = Modifier,
     viewModel: MainViewModel = viewModel(),
-    onClick: (ArticleDTO) -> Unit
+    onClick: (Article) -> Unit
 ) {
-    val articles by viewModel.articles.collectAsStateWithLifecycle()
+    val articles by viewModel.articles.collectAsStateWithLifecycle(listOf())
 
     LazyColumn {
         items(articles.size) { index ->
