@@ -12,7 +12,7 @@ import nick.mirosh.pokeapp.database.ArticleDao
 @Module
 @InstallIn(ViewModelComponent::class)
 class RepositoryModule {
-
+    @Universal
     @Provides
     fun provideNewsRepository(
         newsRemoteDataSource: NewsRemoteDataSource,
@@ -21,6 +21,16 @@ class RepositoryModule {
         return NewsRepositoryImpl(
             newsRemoteDataSource,
             appDatabase
+        )
+    }
+
+    @Cache
+    @Provides
+    fun provideCacheNewsRepository(
+        appDatabase: ArticleDao
+    ): NewsRepository {
+        return NewsRepositoryImpl(
+            dao = appDatabase
         )
     }
 }

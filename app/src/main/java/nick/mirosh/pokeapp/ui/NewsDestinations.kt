@@ -41,3 +41,7 @@ object Details : NewsDestinations {
         navArgument(articleArg) { type = NavType.StringType }
     )
 }
+
+object FavoriteArticles : NewsDestinations {
+    override val route = "favorite_articles"
+}

@@ -1,46 +1,34 @@
-package nick.mirosh.pokeapp.ui.feed
+package nick.mirosh.pokeapp.ui.favorite_articles
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import nick.mirosh.pokeapp.entity.Article
-import nick.mirosh.pokeapp.entity.DatabaseArticle
-import nick.mirosh.pokeapp.ui.MainViewModel
-
 
 @Composable
-fun MainScreenContent(
+fun FavoriteArticlesScreenContent(
     modifier: Modifier = Modifier,
-    viewModel: MainViewModel = viewModel(),
-    onClick: (Article) -> Unit,
-    onFloatingActionButtonClicked: () -> Unit
+    viewModel: FavoriteArticlesViewModel,
 ) {
     val articles by viewModel.articles.collectAsStateWithLifecycle(listOf())
 
+    val newArticles = articles.take(5)
     LazyColumn {
-        items(articles.size) { index ->
-            val article = articles[index]
+        items(newArticles.size) { index ->
+            val article = newArticles[index]
             Row(
                 modifier = Modifier.padding(8.dp, 4.dp, 8.dp, 4.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -48,7 +36,6 @@ fun MainScreenContent(
                 AsyncImage(
                     contentScale = ContentScale.FillBounds,
                     modifier = Modifier
-                        .clickable { onClick(article) }
                         .height(150.dp)
                         .padding(8.dp)
                         .width(200.dp)
@@ -58,27 +45,12 @@ fun MainScreenContent(
                     contentDescription = "Translated description of what the image contains"
                 )
                 Text(
-                    text = article.title.orEmpty(),
+                    text = article.title,
                     lineHeight = 18.sp,
                     fontSize = 14.sp
 
                 )
             }
         }
-    }
-    MyFloatingActionButton(onClick = { onFloatingActionButtonClicked() })
-}
-
-@Composable
-fun MyFloatingActionButton(onClick: () -> Unit) {
-    FloatingActionButton(
-        onClick = onClick,
-        contentColor = Color.White, // Customize the icon color here
-        modifier = Modifier.padding(16.dp)
-    ) {
-        Icon(
-            imageVector = Icons.Default.Add,
-            contentDescription = "Add",
-        )
     }
 }
