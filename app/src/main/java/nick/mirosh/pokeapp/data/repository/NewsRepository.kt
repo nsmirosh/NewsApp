@@ -9,4 +9,8 @@ interface NewsRepository {
 
     var articles: Flow<List<Article>>
     suspend fun getNewsList()
+
+    suspend fun getFavoriteArticles()
+
+    suspend fun saveLikedArticle(article: Article)
 }

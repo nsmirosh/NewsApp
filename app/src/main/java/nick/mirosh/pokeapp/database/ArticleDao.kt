@@ -14,8 +14,15 @@ interface ArticleDao {
     @Query("SELECT * FROM articles")
     fun getAllArticles(): Flow<List<DatabaseArticle>>
 
+
+    @Query("SELECT * FROM articles WHERE liked = 1")
+    fun getLikedArticles(): Flow<List<DatabaseArticle>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(articles: List<DatabaseArticle>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(article: DatabaseArticle)
 
     @Delete
     fun delete(article: DatabaseArticle)

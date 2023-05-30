@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
                                     navController.navigateSingleTopTo("${Details.route}/$encodedUrl")
 
                                 },
-                                onFloatingActionButtonClicked = {
+                                onSavedArticlesClicked = {
                                     navController.navigateSingleTopTo(FavoriteArticles.route)
                                 })
                         }

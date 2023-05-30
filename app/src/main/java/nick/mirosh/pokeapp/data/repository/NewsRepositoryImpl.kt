@@ -14,6 +14,7 @@ import nick.mirosh.pokeapp.database.AppDatabase
 import nick.mirosh.pokeapp.database.ArticleDao
 import nick.mirosh.pokeapp.entity.Article
 import nick.mirosh.pokeapp.entity.asDatabaseArticle
+import nick.mirosh.pokeapp.entity.asDatabaseModel
 import nick.mirosh.pokeapp.entity.asDomainModel
 import javax.inject.Inject
 
@@ -46,5 +47,16 @@ class NewsRepositoryImpl @Inject constructor(
             }
         }
     }
-
+    override suspend fun getFavoriteArticles() {
+        withContext(Dispatchers.IO) {
+            articles = dao.getLikedArticles().map {
+                it.asDomainModel()
+            }
+        }
+    }
+    override suspend fun saveLikedArticle(article: Article) {
+        withContext(Dispatchers.IO) {
+            dao.insert(article.asDatabaseModel())
+        }
+    }
 }

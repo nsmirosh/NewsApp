@@ -1,8 +1,5 @@
 package nick.mirosh.pokeapp.entity
 
-import androidx.room.Entity
-
-@Entity(tableName = "articles")
 data class Article(
     val author: String,
     val content: String,
@@ -11,4 +8,16 @@ data class Article(
     val title: String,
     val url: String,
     val urlToImage: String,
+    val liked: Boolean = false,
+)
+
+fun Article.asDatabaseModel() = DatabaseArticle(
+    author = author,
+    content = content,
+    description = description,
+    publishedAt = publishedAt,
+    title = title,
+    url = url,
+    urlToImage = urlToImage,
+    liked = liked,
 )

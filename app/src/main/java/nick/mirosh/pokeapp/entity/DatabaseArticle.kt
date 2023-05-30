@@ -14,6 +14,7 @@ data class DatabaseArticle(
     val title: String,
     val url: String,
     @ColumnInfo(name = "url_to_image") val urlToImage: String,
+    val liked: Boolean = false,
 )
 
 

@@ -24,4 +24,11 @@ class MainViewModel @Inject constructor(
             newsRepository.getNewsList()
         }
     }
+
+
+    fun onLikeClick(article: Article) {
+        viewModelScope.launch {
+            newsRepository.saveLikedArticle(article)
+        }
+    }
 }

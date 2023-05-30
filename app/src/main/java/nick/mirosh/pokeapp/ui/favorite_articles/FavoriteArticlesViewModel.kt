@@ -22,7 +22,6 @@ class FavoriteArticlesViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-
             newsRepository.getNewsList()
         }
     }
