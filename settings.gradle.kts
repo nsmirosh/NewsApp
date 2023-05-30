@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "PokeApp"
+rootProject.name = "NewsApp"
 include(":app")
  

@@ -1,4 +1,5 @@
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+import java.util.Properties
+
 
 plugins {
     id("com.android.application")
@@ -8,11 +9,11 @@ plugins {
 }
 
 android {
-    namespace = "nick.mirosh.pokeapp"
+    namespace = "nick.mirosh.newsapp"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "nick.mirosh.pokeapp"
+        applicationId = "nick.mirosh.newsapp"
         minSdk = 24
         targetSdk = 33
         versionCode = 1
@@ -26,8 +27,10 @@ android {
 
     buildTypes {
         debug {
+            val properties = Properties()
+            properties.load(project.rootProject.file("local.properties").inputStream())
+            buildConfigField("String", "API_KEY", "\"${properties.getProperty("API_KEY")}\"")
             buildConfigField("String", "BASE_URL", "\"https://newsapi.org/v2/\"")
-            buildConfigField("String", "API_KEY", "\"adcaafd32edf41d9b6cf341b71cafcaa\"")
         }
         release {
             isMinifyEnabled = false
@@ -67,7 +70,7 @@ dependencies {
     //logging interceptor dependency
     implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
 
-    implementation ("androidx.navigation:navigation-compose:2.5.3")
+    implementation("androidx.navigation:navigation-compose:2.5.3")
 
 
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
@@ -100,7 +103,7 @@ dependencies {
 
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
-    implementation("androidx.activity:activity-compose:1.7.1")
+    implementation("androidx.activity:activity-compose:1.7.2")
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
