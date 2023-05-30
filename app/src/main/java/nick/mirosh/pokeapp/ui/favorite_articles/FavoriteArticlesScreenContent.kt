@@ -25,10 +25,9 @@ fun FavoriteArticlesScreenContent(
 ) {
     val articles by viewModel.articles.collectAsStateWithLifecycle(listOf())
 
-    val newArticles = articles.take(5)
     LazyColumn {
-        items(newArticles.size) { index ->
-            val article = newArticles[index]
+        items(articles.size) { index ->
+            val article = articles[index]
             Row(
                 modifier = Modifier.padding(8.dp, 4.dp, 8.dp, 4.dp),
                 verticalAlignment = Alignment.CenterVertically

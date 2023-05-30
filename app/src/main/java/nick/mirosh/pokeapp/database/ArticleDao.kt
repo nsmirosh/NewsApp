@@ -12,11 +12,10 @@ import nick.mirosh.pokeapp.entity.DatabaseArticle
 @Dao
 interface ArticleDao {
     @Query("SELECT * FROM articles")
-    fun getAllArticles(): Flow<List<DatabaseArticle>>
-
+    fun getAllArticles():  List<DatabaseArticle>
 
     @Query("SELECT * FROM articles WHERE liked = 1")
-    fun getLikedArticles(): Flow<List<DatabaseArticle>>
+    fun getLikedArticles(): List<DatabaseArticle>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(articles: List<DatabaseArticle>)

@@ -25,10 +25,9 @@ class MainViewModel @Inject constructor(
         }
     }
 
-
     fun onLikeClick(article: Article) {
         viewModelScope.launch {
-            newsRepository.saveLikedArticle(article)
+            newsRepository.saveLikedArticle(article.copy(liked = !article.liked))
         }
     }
 }
