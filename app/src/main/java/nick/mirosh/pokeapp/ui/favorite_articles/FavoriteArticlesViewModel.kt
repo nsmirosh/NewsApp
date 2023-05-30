@@ -1,5 +1,6 @@
 package nick.mirosh.pokeapp.ui.favorite_articles
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +17,7 @@ class FavoriteArticlesViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
+            Log.d("FavoriteArticlesViewModel", "@Cache newsRepository.hashCode = ${newsRepository.hashCode()}")
             newsRepository.getFavoriteArticles()
         }
     }

@@ -1,5 +1,6 @@
 package nick.mirosh.pokeapp.ui
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,6 +22,7 @@ class MainViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
+            Log.d("MainViewModel", "@Universal newsRepository.hashCode = ${newsRepository.hashCode()}")
             newsRepository.getNewsList()
         }
     }

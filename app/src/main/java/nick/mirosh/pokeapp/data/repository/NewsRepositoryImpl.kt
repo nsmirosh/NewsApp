@@ -1,10 +1,8 @@
 package nick.mirosh.pokeapp.data.repository
 
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import nick.mirosh.pokeapp.database.ArticleDao
 import nick.mirosh.pokeapp.entity.Article
@@ -18,10 +16,8 @@ class NewsRepositoryImpl @Inject constructor(
     private val dao: ArticleDao
 ) : NewsRepository {
 
-
-    private val _articles: MutableStateFlow<List<Article>> = MutableStateFlow(emptyList())
-
-    override var articles: StateFlow<List<Article>> = _articles
+    private val _articles = MutableStateFlow<List<Article>>(emptyList())
+    override val articles: StateFlow<List<Article>> = _articles
 
     override suspend fun getNewsList() {
         withContext(Dispatchers.IO) {

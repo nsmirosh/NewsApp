@@ -1,5 +1,6 @@
 package nick.mirosh.pokeapp.di
 
+import android.util.Log
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,10 +19,12 @@ class RepositoryModule {
         newsRemoteDataSource: NewsRemoteDataSource,
         appDatabase: ArticleDao
     ): NewsRepository {
-        return NewsRepositoryImpl(
+        val repo =  NewsRepositoryImpl(
             newsRemoteDataSource,
             appDatabase
         )
+        Log.d("RepositoryModule", "@Universal NewsRepository.hashCode = ${repo.hashCode()}")
+        return repo
     }
 
     @Cache
@@ -29,8 +32,11 @@ class RepositoryModule {
     fun provideCacheNewsRepository(
         appDatabase: ArticleDao
     ): NewsRepository {
-        return NewsRepositoryImpl(
+
+        val repo =  NewsRepositoryImpl(
             dao = appDatabase
         )
+        Log.d("RepositoryModule", "@Cache NewsRepository.hashCode = ${repo.hashCode()}")
+        return repo
     }
 }
