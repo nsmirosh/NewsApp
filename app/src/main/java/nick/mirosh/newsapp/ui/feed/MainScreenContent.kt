@@ -1,6 +1,8 @@
 package nick.mirosh.newsapp.ui.feed
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -27,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -71,6 +74,9 @@ fun ArticleItem(
     onArticleClick: (Article) -> Unit,
     onLikeCLick: (Article) -> Unit
 ) {
+
+    val mContext = LocalContext.current
+
     Row(
         modifier = Modifier.padding(8.dp, 4.dp, 8.dp, 4.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -99,7 +105,11 @@ fun ArticleItem(
                 fontSize = 14.sp
             )
             IconButton(
-                onClick = { onLikeCLick(article) },
+                onClick = {
+                    onLikeCLick(article)
+                    mToast(mContext)
+
+                },
                 modifier = Modifier.align(Alignment.BottomEnd)
             ) {
                 Icon(
@@ -132,4 +142,8 @@ fun SavedArticlesAppBar(onSavedArticlesClicked: () -> Unit) {
                 onSavedArticlesClicked()
             }
     )
+}
+
+private fun mToast(context: Context){
+    Toast.makeText(context, "Article added to Favorites", Toast.LENGTH_LONG).show()
 }

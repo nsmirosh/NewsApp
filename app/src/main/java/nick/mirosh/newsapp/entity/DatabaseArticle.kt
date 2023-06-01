@@ -19,6 +19,7 @@ data class DatabaseArticle(
 
 
 fun DatabaseArticle.asDomainModel() = Article(
+    uid = uid!!,
     author = author,
     content = content,
     description = description,
@@ -32,6 +33,7 @@ fun DatabaseArticle.asDomainModel() = Article(
 fun List<DatabaseArticle>.asDomainModel(): List<Article> {
     return map {
         Article(
+            uid = it.uid!!,
             author = it.author,
             content = it.content,
             description = it.description,

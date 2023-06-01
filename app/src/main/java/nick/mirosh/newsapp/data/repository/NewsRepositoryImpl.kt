@@ -1,5 +1,6 @@
 package nick.mirosh.newsapp.data.repository
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,18 +22,17 @@ class NewsRepositoryImpl @Inject constructor(
 
     override suspend fun getNewsList() {
         withContext(Dispatchers.IO) {
-            _articles.value = try {
+            try {
                 val networkArticles = newsDataSource?.getHeadlines() ?: emptyList()
                 if (networkArticles.isNotEmpty()) {
                     dao.insertAll(networkArticles.map {
                         it.asDatabaseArticle()
                     })
                 }
-                networkArticles.map {
-                    it.asDomainModel()
-                }
             } catch (e: Exception) {
-                dao.getAllArticles().map {
+                //
+            } finally {
+                _articles.value = dao.getAllArticles().map {
                     it.asDomainModel()
                 }
             }
@@ -50,7 +50,12 @@ class NewsRepositoryImpl @Inject constructor(
 
     override suspend fun saveLikedArticle(article: Article) {
         withContext(Dispatchers.IO) {
+            Log.d("NewsRepositoryImpl", "saveLikedArticle: article = $article")
             dao.insert(article.asDatabaseModel())
+
+            _articles.value = dao.getAllArticles().map {
+                it.asDomainModel()
+            }
         }
     }
 }

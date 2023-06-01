@@ -18,14 +18,4 @@ fun NetworkArticle.asDatabaseArticle() = DatabaseArticle(
     url = url.orEmpty(),
     urlToImage = urlToImage.orEmpty(),
 )
-fun NetworkArticle.asDomainModel() = Article(
-    author = author.orEmpty(),
-    content = content.orEmpty(),
-    description = description.orEmpty(),
-    publishedAt = publishedAt.orEmpty(),
-    title = title.orEmpty(),
-    url = url.orEmpty(),
-    urlToImage = urlToImage.orEmpty(),
-)
-
 

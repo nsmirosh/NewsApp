@@ -1,6 +1,7 @@
 package nick.mirosh.newsapp.entity
 
 data class Article(
+    val uid: Int,
     val author: String,
     val content: String,
     val description: String,
@@ -12,6 +13,7 @@ data class Article(
 )
 
 fun Article.asDatabaseModel() = DatabaseArticle(
+    uid = uid,
     author = author,
     content = content,
     description = description,
