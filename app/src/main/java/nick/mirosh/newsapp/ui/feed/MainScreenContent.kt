@@ -15,27 +15,41 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import nick.mirosh.newsapp.R
 import nick.mirosh.newsapp.entity.Article
 import nick.mirosh.newsapp.ui.MainViewModel
 
@@ -52,21 +66,29 @@ fun MainScreenContent(
     val articles by viewModel.articles.collectAsStateWithLifecycle(listOf())
 
     Scaffold(
-        topBar = {
-            SavedArticlesAppBar(onSavedArticlesClicked)
-        },
         content = {
-            LazyColumn(
-                modifier = Modifier.padding(top = 80.dp)
-            ) {
+            LazyColumn {
                 items(articles.size) { index ->
                     ArticleItem(articles[index], onClick, viewModel::onLikeClick)
                 }
             }
-        }
-    )
-}
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = onSavedArticlesClicked,
+                modifier = Modifier.padding(bottom = 16.dp, end = 16.dp)
+            ) {
+                Icon(
+                    modifier = Modifier.size(32.dp),
+                    imageVector = ImageVector.vectorResource(id = R.drawable.save),
+                    contentDescription = "Save"
+                )
+            }
+        },
 
+        floatingActionButtonPosition = FabPosition.End,
+        )
+}
 
 @Composable
 fun ArticleItem(
@@ -74,6 +96,7 @@ fun ArticleItem(
     onArticleClick: (Article) -> Unit,
     onLikeCLick: (Article) -> Unit
 ) {
+    var isLiked by remember { mutableStateOf(false) }
 
     val mContext = LocalContext.current
 
@@ -107,15 +130,16 @@ fun ArticleItem(
             IconButton(
                 onClick = {
                     onLikeCLick(article)
+                    isLiked = !isLiked
                     mToast(mContext)
 
                 },
                 modifier = Modifier.align(Alignment.BottomEnd)
             ) {
                 Icon(
-                    imageVector = Icons.Default.FavoriteBorder,
+                    imageVector = if (isLiked) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                     contentDescription = "Favorite",
-                    tint = Color.Black,
+                    tint = if (isLiked) Color.Red else Color.Black,
                     modifier = Modifier.size(24.dp)
                 )
             }
@@ -123,27 +147,8 @@ fun ArticleItem(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SavedArticlesAppBar(onSavedArticlesClicked: () -> Unit) {
-    TopAppBar(
-        title = {
-            Text(
-                text = "Saved Articles",
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center
-            )
-        },
-        modifier = Modifier
-            .height(80.dp)
-            .padding(16.dp)
-            .background(color = Color.Blue)
-            .clickable {
-                onSavedArticlesClicked()
-            }
-    )
-}
 
-private fun mToast(context: Context){
+
+private fun mToast(context: Context) {
     Toast.makeText(context, "Article added to Favorites", Toast.LENGTH_LONG).show()
 }
