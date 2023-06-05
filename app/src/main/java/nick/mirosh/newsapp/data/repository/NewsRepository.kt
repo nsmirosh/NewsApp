@@ -6,9 +6,9 @@ import nick.mirosh.newsapp.entity.Article
 interface NewsRepository {
 
     val articles: StateFlow<List<Article>>
-    suspend fun getNewsList()
+    suspend fun refreshNews()
 
     suspend fun getFavoriteArticles()
 
-    suspend fun saveLikedArticle(article: Article)
+    suspend fun updateArticle(article: Article)
 }

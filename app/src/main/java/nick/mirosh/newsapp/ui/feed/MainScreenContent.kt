@@ -2,6 +2,7 @@ package nick.mirosh.newsapp.ui.feed
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -96,8 +97,6 @@ fun ArticleItem(
     onArticleClick: (Article) -> Unit,
     onLikeCLick: (Article) -> Unit
 ) {
-    var isLiked by remember { mutableStateOf(false) }
-
     val mContext = LocalContext.current
 
     Row(
@@ -130,16 +129,17 @@ fun ArticleItem(
             IconButton(
                 onClick = {
                     onLikeCLick(article)
-                    isLiked = !isLiked
                     mToast(mContext)
 
                 },
                 modifier = Modifier.align(Alignment.BottomEnd)
             ) {
+
+                Log.d("ArticleItem", "is article liked: ${article.liked}")
                 Icon(
-                    imageVector = if (isLiked) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                    imageVector = if (article.liked) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                     contentDescription = "Favorite",
-                    tint = if (isLiked) Color.Red else Color.Black,
+                    tint = if (article.liked) Color.Red else Color.Black,
                     modifier = Modifier.size(24.dp)
                 )
             }

@@ -6,20 +6,18 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "articles")
 data class DatabaseArticle(
-    @PrimaryKey(autoGenerate = true) val uid: Int? = null,
     val author: String,
     val content: String,
     val description: String,
     @ColumnInfo(name = "published_at") val publishedAt: String,
     val title: String,
-    val url: String,
+    @PrimaryKey val url: String,
     @ColumnInfo(name = "url_to_image") val urlToImage: String,
     val liked: Boolean = false,
 )
 
 
 fun DatabaseArticle.asDomainModel() = Article(
-    uid = uid!!,
     author = author,
     content = content,
     description = description,
@@ -27,13 +25,13 @@ fun DatabaseArticle.asDomainModel() = Article(
     title = title,
     url = url,
     urlToImage = urlToImage,
+    liked = liked,
 )
 
 
 fun List<DatabaseArticle>.asDomainModel(): List<Article> {
     return map {
         Article(
-            uid = it.uid!!,
             author = it.author,
             content = it.content,
             description = it.description,

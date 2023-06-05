@@ -20,21 +20,18 @@ class NewsRepositoryImpl @Inject constructor(
     private val _articles = MutableStateFlow<List<Article>>(emptyList())
     override val articles: StateFlow<List<Article>> = _articles
 
-    override suspend fun getNewsList() {
+    override suspend fun refreshNews() {
         withContext(Dispatchers.IO) {
             try {
                 val networkArticles = newsDataSource?.getHeadlines() ?: emptyList()
                 if (networkArticles.isNotEmpty()) {
-                    dao.insertAll(networkArticles.map {
+                    val result = dao.insertAll(networkArticles.map {
                         it.asDatabaseArticle()
                     })
+                    Log.d("NewsRepositoryImpl", "refreshNews: result = $result")
                 }
-            } catch (e: Exception) {
-                //
             } finally {
-                _articles.value = dao.getAllArticles().map {
-                    it.asDomainModel()
-                }
+                getAllArticlesFromDb()
             }
         }
     }
@@ -48,14 +45,16 @@ class NewsRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun saveLikedArticle(article: Article) {
+    override suspend fun updateArticle(article: Article) {
         withContext(Dispatchers.IO) {
-            Log.d("NewsRepositoryImpl", "saveLikedArticle: article = $article")
             dao.insert(article.asDatabaseModel())
-
-            _articles.value = dao.getAllArticles().map {
-                it.asDomainModel()
-            }
+            getAllArticlesFromDb()
         }
+    }
+
+    private fun getAllArticlesFromDb() {
+        _articles.value = dao.getAllArticles()
+            .map { it.asDomainModel() }
+            .sortedBy { it.url }
     }
 }

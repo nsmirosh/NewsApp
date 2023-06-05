@@ -15,8 +15,8 @@ interface ArticleDao {
     @Query("SELECT * FROM articles WHERE liked = 1")
     fun getLikedArticles(): List<DatabaseArticle>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(articles: List<DatabaseArticle>)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertAll(articles: List<DatabaseArticle>): List<Long>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(article: DatabaseArticle)

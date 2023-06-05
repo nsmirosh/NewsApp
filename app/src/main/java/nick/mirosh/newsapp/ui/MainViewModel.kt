@@ -19,13 +19,13 @@ class MainViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             Log.d("MainViewModel", "@Universal newsRepository.hashCode = ${newsRepository.hashCode()}")
-            newsRepository.getNewsList()
+            newsRepository.refreshNews()
         }
     }
 
     fun onLikeClick(article: Article) {
         viewModelScope.launch {
-            newsRepository.saveLikedArticle(article.copy(liked = !article.liked))
+            newsRepository.updateArticle(article.copy(liked = !article.liked))
 
         }
     }
