@@ -1,6 +1,8 @@
 package nick.mirosh.newsapp.ui.favorite_articles
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -25,31 +27,45 @@ fun FavoriteArticlesScreenContent(
 ) {
     val articles by viewModel.articles.collectAsStateWithLifecycle(listOf())
 
-    LazyColumn {
-        items(articles.size) { index ->
-            val article = articles[index]
-            Row(
-                modifier = Modifier.padding(8.dp, 4.dp, 8.dp, 4.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                AsyncImage(
-                    contentScale = ContentScale.FillBounds,
-                    modifier = Modifier
-                        .height(150.dp)
-                        .padding(8.dp)
-                        .width(200.dp)
-                        .clip(shape = RoundedCornerShape(8.dp)),
+    if (articles.isNotEmpty()) {
 
-                    model = article.urlToImage,
-                    contentDescription = "Translated description of what the image contains"
-                )
-                Text(
-                    text = article.title,
-                    lineHeight = 18.sp,
-                    fontSize = 14.sp
+        LazyColumn {
 
-                )
+            items(articles.size) { index ->
+                val article = articles[index]
+                Row(
+                    modifier = Modifier.padding(8.dp, 4.dp, 8.dp, 4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    AsyncImage(
+                        contentScale = ContentScale.FillBounds,
+                        modifier = Modifier
+                            .height(150.dp)
+                            .padding(8.dp)
+                            .width(200.dp)
+                            .clip(shape = RoundedCornerShape(8.dp)),
+
+                        model = article.urlToImage,
+                        contentDescription = "Translated description of what the image contains"
+                    )
+                    Text(
+                        text = article.title,
+                        lineHeight = 18.sp,
+                        fontSize = 14.sp
+
+                    )
+                }
             }
+        }
+    } else {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "No saved articles",
+                fontSize = 24.sp,
+            )
         }
     }
 }
