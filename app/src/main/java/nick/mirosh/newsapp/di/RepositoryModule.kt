@@ -1,6 +1,5 @@
 package nick.mirosh.newsapp.di
 
-import android.util.Log
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,6 +13,7 @@ import nick.mirosh.newsapp.database.ArticleDao
 @InstallIn(ViewModelComponent::class)
 class RepositoryModule {
     @Provides
+    @Universal
     fun provideNewsRepository(
         newsRemoteDataSource: NewsRemoteDataSource,
         appDatabase: ArticleDao
