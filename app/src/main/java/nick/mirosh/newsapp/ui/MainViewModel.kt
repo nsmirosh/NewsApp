@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    @Universal private val newsRepository: NewsRepository,
+    private val newsRepository: NewsRepository,
 ) : ViewModel() {
     val articles = newsRepository.articles
 
@@ -26,7 +26,6 @@ class MainViewModel @Inject constructor(
     fun onLikeClick(article: Article) {
         viewModelScope.launch {
             newsRepository.updateArticle(article.copy(liked = !article.liked))
-
         }
     }
 }

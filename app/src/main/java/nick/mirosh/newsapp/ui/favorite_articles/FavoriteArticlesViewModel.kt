@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteArticlesViewModel @Inject constructor(
-    @Cache private val newsRepository: NewsRepository,
+    private val newsRepository: NewsRepository,
 ) : ViewModel() {
     val articles = newsRepository.articles
 

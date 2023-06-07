@@ -13,30 +13,14 @@ import nick.mirosh.newsapp.database.ArticleDao
 @Module
 @InstallIn(ViewModelComponent::class)
 class RepositoryModule {
-    @Universal
     @Provides
     fun provideNewsRepository(
         newsRemoteDataSource: NewsRemoteDataSource,
         appDatabase: ArticleDao
     ): NewsRepository {
-        val repo =  NewsRepositoryImpl(
+        return  NewsRepositoryImpl(
             newsRemoteDataSource,
             appDatabase
         )
-        Log.d("RepositoryModule", "@Universal NewsRepository.hashCode = ${repo.hashCode()}")
-        return repo
-    }
-
-    @Cache
-    @Provides
-    fun provideCacheNewsRepository(
-        appDatabase: ArticleDao
-    ): NewsRepository {
-
-        val repo =  NewsRepositoryImpl(
-            dao = appDatabase
-        )
-        Log.d("RepositoryModule", "@Cache NewsRepository.hashCode = ${repo.hashCode()}")
-        return repo
     }
 }
