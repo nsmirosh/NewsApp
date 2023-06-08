@@ -5,7 +5,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
-    id("com.google.dagger.hilt.android")
+
 }
 
 android {
@@ -72,12 +72,6 @@ dependencies {
 
     implementation("androidx.navigation:navigation-compose:2.5.3")
 
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-
-    implementation("com.google.dagger:hilt-android:2.46.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.46.1")
-
-
     //depdendency for coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
@@ -86,7 +80,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
     implementation("io.coil-kt:coil-compose:2.3.0")
-
 
     //Room
     val room_version = "2.5.1"

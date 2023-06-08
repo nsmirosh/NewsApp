@@ -1,5 +1,6 @@
 package nick.mirosh.newsapp.ui
 
+import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -7,12 +8,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import dagger.hilt.android.AndroidEntryPoint
+import nick.mirosh.newsapp.data.repository.NewsRemoteDataSource
+import nick.mirosh.newsapp.data.repository.NewsRepositoryImpl
 import nick.mirosh.newsapp.ui.details.DetailsScreenContent
 import nick.mirosh.newsapp.ui.favorite_articles.FavoriteArticlesScreenContent
 import nick.mirosh.newsapp.ui.favorite_articles.FavoriteArticlesViewModel
@@ -21,7 +24,6 @@ import nick.mirosh.newsapp.ui.theme.NewsAppTheme
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,9 +41,12 @@ class MainActivity : ComponentActivity() {
                         startDestination = Feed.route,
                         modifier = Modifier
                     ) {
-                        composable(route = Feed.route) {
-                            val viewModel = hiltViewModel<MainViewModel>()
 
+                        val viewModel = ViewModelProvider(
+                            this@MainActivity,
+                            MainViewModelFactory(application)
+                        )[MainViewModel::class.java]
+                        composable(route = Feed.route) {
                             MainScreenContent(
                                 viewModel = viewModel,
                                 onClick = {
@@ -68,13 +73,54 @@ class MainActivity : ComponentActivity() {
                         composable(
                             route = FavoriteArticles.route,
                         ) {
-                            val viewModel = hiltViewModel<FavoriteArticlesViewModel>()
 
+                            val viewModel = ViewModelProvider(
+                                this@MainActivity,
+                                FavoriteArticlesViewModelFactory(application)
+                            )[FavoriteArticlesViewModel::class.java]
                             FavoriteArticlesScreenContent(viewModel = viewModel)
                         }
                     }
                 }
             }
+        }
+    }
+}
+
+
+// build a factory for MainViewModel for import androidx.lifecycle.viewmodel.compose.viewModel
+fun MainViewModelFactory(application: Application): ViewModelProvider.Factory {
+    return object : ViewModelProvider.Factory {
+
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+
+            //initialize newsRepositoryImpl for MainViewModel
+            val newsRepositoryImpl = NewsRepositoryImpl(
+                newsDataSource = NewsRemoteDataSource(),
+                application
+            )
+
+            return MainViewModel(
+                newsRepository = newsRepositoryImpl
+            ) as T
+        }
+    }
+}
+
+fun FavoriteArticlesViewModelFactory(application: Application): ViewModelProvider.Factory {
+    return object : ViewModelProvider.Factory {
+
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+
+            //initialize newsRepositoryImpl for MainViewModel
+            val newsRepositoryImpl = NewsRepositoryImpl(
+                newsDataSource = NewsRemoteDataSource(),
+                application
+            )
+
+            return FavoriteArticlesViewModel(
+                newsRepository = newsRepositoryImpl
+            ) as T
         }
     }
 }
