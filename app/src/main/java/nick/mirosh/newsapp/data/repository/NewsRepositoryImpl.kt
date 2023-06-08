@@ -16,7 +16,7 @@ import nick.mirosh.newsapp.entity.asDomainModel
 
 class NewsRepositoryImpl constructor(
     private val newsDataSource: NewsRemoteDataSource? = null,
-//    private val dao: ArticleDao,
+    private val dao: ArticleDao,
     private val appContext: android.content.Context,
 ) : NewsRepository {
 
