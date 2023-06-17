@@ -4,6 +4,9 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import nick.mirosh.newsapp.data.repository.NewsRepository
 import nick.mirosh.newsapp.di.Universal
@@ -18,9 +21,14 @@ class MainViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            Log.d("MainViewModel", "@Universal newsRepository.hashCode = ${newsRepository.hashCode()}")
+            Log.d(
+                "MainViewModel",
+                "@Universal newsRepository.hashCode = ${newsRepository.hashCode()}"
+            )
             newsRepository.refreshNews()
         }
+
+
     }
 
     fun onLikeClick(article: Article) {
