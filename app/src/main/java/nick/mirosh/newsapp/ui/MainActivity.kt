@@ -1,6 +1,5 @@
 package nick.mirosh.newsapp.ui
 
-import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,14 +7,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import nick.mirosh.newsapp.data.repository.NewsRemoteDataSource
-import nick.mirosh.newsapp.data.repository.NewsRepositoryImpl
+import nick.mirosh.newsapp.di.AppContainer
 import nick.mirosh.newsapp.ui.details.DetailsScreenContent
 import nick.mirosh.newsapp.ui.favorite_articles.FavoriteArticlesScreenContent
 import nick.mirosh.newsapp.ui.favorite_articles.FavoriteArticlesViewModel
@@ -27,7 +24,7 @@ import java.nio.charset.StandardCharsets
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        val appContainer = AppContainer(application)
         setContent {
             NewsAppTheme {
                 val navController = rememberNavController()
@@ -44,7 +41,7 @@ class MainActivity : ComponentActivity() {
 
                         val viewModel = ViewModelProvider(
                             this@MainActivity,
-                            MainViewModelFactory(application)
+                            appContainer.mainViewModelFactory
                         )[MainViewModel::class.java]
                         composable(route = Feed.route) {
                             MainScreenContent(
@@ -76,7 +73,7 @@ class MainActivity : ComponentActivity() {
 
                             val viewModel = ViewModelProvider(
                                 this@MainActivity,
-                                FavoriteArticlesViewModelFactory(application)
+                                appContainer.favoriteArticlesViewModelFactory
                             )[FavoriteArticlesViewModel::class.java]
                             FavoriteArticlesScreenContent(viewModel = viewModel)
                         }
@@ -86,45 +83,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-
-// build a factory for MainViewModel for import androidx.lifecycle.viewmodel.compose.viewModel
-fun MainViewModelFactory(application: Application): ViewModelProvider.Factory {
-    return object : ViewModelProvider.Factory {
-
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-
-            //initialize newsRepositoryImpl for MainViewModel
-            val newsRepositoryImpl = NewsRepositoryImpl(
-                newsDataSource = NewsRemoteDataSource(),
-                application
-            )
-
-            return MainViewModel(
-                newsRepository = newsRepositoryImpl
-            ) as T
-        }
-    }
-}
-
-fun FavoriteArticlesViewModelFactory(application: Application): ViewModelProvider.Factory {
-    return object : ViewModelProvider.Factory {
-
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-
-            //initialize newsRepositoryImpl for MainViewModel
-            val newsRepositoryImpl = NewsRepositoryImpl(
-                newsDataSource = NewsRemoteDataSource(),
-                application
-            )
-
-            return FavoriteArticlesViewModel(
-                newsRepository = newsRepositoryImpl
-            ) as T
-        }
-    }
-}
-
 
 fun NavHostController.navigateSingleTopTo(route: String) =
     this.navigate(route) { launchSingleTop = true }

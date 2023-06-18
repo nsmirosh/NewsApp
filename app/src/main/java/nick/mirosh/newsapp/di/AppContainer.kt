@@ -20,5 +20,10 @@ class AppContainer(application: Application) {
 
     private val newsRemoteDataSource = NewsRemoteDataSource(newsAPI)
 
-    val newsRepository = NewsRepositoryImpl(newsRemoteDataSource, dao, application)
+    private val newsRepository = NewsRepositoryImpl(newsRemoteDataSource, dao)
+
+    val favoriteArticlesViewModelFactory = FavoriteArticlesViewModelFactory(newsRepository)
+
+    val mainViewModelFactory = MainViewModelFactory(newsRepository)
+
 }

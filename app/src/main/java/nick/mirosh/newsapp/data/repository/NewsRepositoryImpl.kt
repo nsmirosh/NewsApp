@@ -17,16 +17,10 @@ import nick.mirosh.newsapp.entity.asDomainModel
 class NewsRepositoryImpl constructor(
     private val newsDataSource: NewsRemoteDataSource? = null,
     private val dao: ArticleDao,
-    private val appContext: android.content.Context,
 ) : NewsRepository {
 
     private val _articles = MutableStateFlow<List<Article>>(emptyList())
     override val articles: StateFlow<List<Article>> = _articles
-
-    val dao: ArticleDao = Room
-        .databaseBuilder(appContext, AppDatabase::class.java, DATABASE_NAME)
-        .build()
-        .articleDao()
 
     override suspend fun refreshNews() {
         withContext(Dispatchers.IO) {

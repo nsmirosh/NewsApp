@@ -10,7 +10,7 @@ import nick.mirosh.newsapp.entity.Article
 
 
 class MainViewModel constructor(
-    private val newsRepository: NewsRepositoryImpl,
+    private val newsRepository: NewsRepository,
 ) : ViewModel() {
     val articles = newsRepository.articles
 
