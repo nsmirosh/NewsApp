@@ -13,8 +13,8 @@ import nick.mirosh.newsapp.entity.asDomainModel
 import javax.inject.Inject
 
 class NewsRepositoryImpl @Inject constructor(
-    private val newsDataSource: NewsRemoteDataSource? = null,
-    private val dao: ArticleDao
+    private val newsDataSource: NewsRemoteDataSource,
+    private val articleDao: ArticleDao
 ) : NewsRepository {
 
     private val _articles = MutableStateFlow<List<Article>>(emptyList())
@@ -25,7 +25,7 @@ class NewsRepositoryImpl @Inject constructor(
             try {
                 val networkArticles = newsDataSource?.getHeadlines() ?: emptyList()
                 if (networkArticles.isNotEmpty()) {
-                    val result = dao.insertAll(networkArticles.map {
+                    val result = articleDao.insertAll(networkArticles.map {
                         it.asDatabaseArticle()
                     })
                     Log.d("NewsRepositoryImpl", "refreshNews: result = $result")
@@ -38,7 +38,7 @@ class NewsRepositoryImpl @Inject constructor(
 
     override suspend fun getFavoriteArticles() {
         withContext(Dispatchers.IO) {
-            val likedArticles = dao.getLikedArticles().map {
+            val likedArticles = articleDao.getLikedArticles().map {
                 it.asDomainModel()
             }
             _articles.value = likedArticles
@@ -47,13 +47,13 @@ class NewsRepositoryImpl @Inject constructor(
 
     override suspend fun updateArticle(article: Article) {
         withContext(Dispatchers.IO) {
-            dao.insert(article.asDatabaseModel())
+            articleDao.insert(article.asDatabaseModel())
             getAllArticlesFromDb()
         }
     }
 
     private fun getAllArticlesFromDb() {
-        _articles.value = dao.getAllArticles()
+        _articles.value = articleDao.getAllArticles()
             .map { it.asDomainModel() }
             .sortedBy { it.url }
     }

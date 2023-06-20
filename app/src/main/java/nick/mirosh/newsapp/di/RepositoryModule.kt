@@ -13,14 +13,10 @@ import nick.mirosh.newsapp.database.ArticleDao
 @InstallIn(ViewModelComponent::class)
 class RepositoryModule {
     @Provides
-    @Universal
     fun provideNewsRepository(
         newsRemoteDataSource: NewsRemoteDataSource,
-        appDatabase: ArticleDao
+        articleDao: ArticleDao
     ): NewsRepository {
-        return  NewsRepositoryImpl(
-            newsRemoteDataSource,
-            appDatabase
-        )
+        return NewsRepositoryImpl(newsRemoteDataSource, articleDao)
     }
 }
