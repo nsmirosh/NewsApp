@@ -13,7 +13,7 @@ import nick.mirosh.newsapp.entity.asDomainModel
 import javax.inject.Inject
 
 class NewsRepositoryImpl @Inject constructor(
-    private val newsDataSource: NewsRemoteDataSource,
+    private val newsDataSource: NewsRemoteDataSource? = null,
     private val articleDao: ArticleDao
 ) : NewsRepository {
 
