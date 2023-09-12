@@ -5,6 +5,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
+
     id("com.google.dagger.hilt.android")
 }
 
@@ -75,6 +76,7 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
     implementation("com.google.dagger:hilt-android:2.46.1")
+
     kapt("com.google.dagger:hilt-android-compiler:2.46.1")
 
 
@@ -98,6 +100,20 @@ dependencies {
 
     // To use Kotlin annotation processing tool (kapt)
     kapt("androidx.room:room-compiler:$room_version")
+
+    val pagingVersion = "3.1.1"
+
+    implementation("androidx.paging:paging-runtime-ktx:$pagingVersion")
+
+    testImplementation("androidx.paging:paging-common-ktx:$pagingVersion")
+
+    implementation("androidx.paging:paging-rxjava2-ktx:$pagingVersion")
+
+    implementation("androidx.paging:paging-rxjava3:$pagingVersion")
+
+    implementation("androidx.paging:paging-guava:$pagingVersion")
+
+    implementation("androidx.paging:paging-compose:3.2.0-beta01")
 
 
     implementation("androidx.core:core-ktx:1.10.1")

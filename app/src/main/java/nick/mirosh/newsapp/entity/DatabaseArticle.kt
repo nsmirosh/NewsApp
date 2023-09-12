@@ -17,6 +17,7 @@ data class DatabaseArticle(
 )
 
 
+
 fun DatabaseArticle.asDomainModel() = Article(
     author = author,
     content = content,

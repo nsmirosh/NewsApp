@@ -13,7 +13,7 @@ import nick.mirosh.newsapp.entity.asDomainModel
 import javax.inject.Inject
 
 class NewsRepositoryImpl @Inject constructor(
-    private val newsDataSource: NewsRemoteDataSource? = null,
+    private val newsDataSource: NewsRemoteDataSource,
     private val dao: ArticleDao
 ) : NewsRepository {
 
@@ -23,13 +23,20 @@ class NewsRepositoryImpl @Inject constructor(
     override suspend fun refreshNews() {
         withContext(Dispatchers.IO) {
             try {
-                val networkArticles = newsDataSource?.getHeadlines() ?: emptyList()
+                val networkArticles = newsDataSource.getHeadlines() ?: emptyList()
                 if (networkArticles.isNotEmpty()) {
                     val result = dao.insertAll(networkArticles.map {
                         it.asDatabaseArticle()
                     })
                     Log.d("NewsRepositoryImpl", "refreshNews: result = $result")
                 }
+                else {
+
+                }
+            } catch (
+                e: Exception
+            ) {
+                Log.e("NewsRepositoryImpl", "refreshNews: ${e.message}")
             } finally {
                 getAllArticlesFromDb()
             }

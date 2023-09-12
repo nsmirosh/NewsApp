@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.components.SingletonComponent
 import nick.mirosh.newsapp.BuildConfig
 import nick.mirosh.newsapp.networking.HeaderInterceptor
 import nick.mirosh.newsapp.networking.NewsService
@@ -13,7 +14,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 @Module
-@InstallIn(ViewModelComponent::class)
+@InstallIn(SingletonComponent::class)
 class RetrofitModule {
 
     @Provides

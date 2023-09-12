@@ -1,7 +1,6 @@
 package nick.mirosh.newsapp.networking
 
-import nick.mirosh.newsapp.entity.ApiResponse
-import nick.mirosh.newsapp.entity.NetworkArticle
+import nick.mirosh.newsapp.data.entities.RecipesResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -9,10 +8,11 @@ import retrofit2.http.Query
 
 interface NewsService {
 
-    @GET("top-headlines")
+    @GET("recipes/random")
     fun getHeadlines(
-        @Query("country") country: String,
-        @Query("pageSize") pageSize: Int
-    ): Call<ApiResponse<NetworkArticle>>
+        @Query("limitLicense") limitLicense: Boolean,
+        @Query("tags") tags: String,
+        @Query("number") number: Int,
+    ): Call<RecipesResponse>
 
 }
