@@ -10,10 +10,9 @@ import nick.mirosh.newsapp.entity.Article
 import nick.mirosh.newsapp.entity.asDatabaseArticle
 import nick.mirosh.newsapp.entity.asDatabaseModel
 import nick.mirosh.newsapp.entity.asDomainModel
-import javax.inject.Inject
 
-class NewsRepositoryImpl @Inject constructor(
-    private val newsDataSource: NewsRemoteDataSource? = null,
+class NewsRepositoryImpl constructor(
+    private val newsDataSource: NewsRemoteDataSource,
     private val dao: ArticleDao
 ) : NewsRepository {
 
@@ -23,7 +22,7 @@ class NewsRepositoryImpl @Inject constructor(
     override suspend fun refreshNews() {
         withContext(Dispatchers.IO) {
             try {
-                val networkArticles = newsDataSource?.getHeadlines() ?: emptyList()
+                val networkArticles = newsDataSource.getHeadlines() ?: emptyList()
                 if (networkArticles.isNotEmpty()) {
                     val result = dao.insertAll(networkArticles.map {
                         it.asDatabaseArticle()
