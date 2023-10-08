@@ -1,0 +1,23 @@
+Test
+- [ ] Add tests
+
+CI / CD
+- [ ] Add Github Actions
+
+Clear README
+- [ ] Add a clear README with description
+
+Architecture
+- [ ] Add a UIState class and add the layer
+- [ ] Separate everything into separate modules
+
+ UI and animations
+- [ ] fix the switching of the heart color
+
+New functionality
+- [ ] rename favorites to "read later"
+- [ ] Add a search bar to search for news
+- [ ] Add a filter to filter news by category
+- [ ] Add a filter to filter news by country
+- [ ] Add a filter to filter news by language
+-

@@ -12,14 +12,18 @@ import nick.mirosh.newsapp.entity.Article
 import nick.mirosh.newsapp.entity.asDatabaseArticle
 import nick.mirosh.newsapp.entity.asDatabaseModel
 import nick.mirosh.newsapp.entity.asDomainModel
+import java.io.PrintWriter
+import java.io.StringWriter
 import javax.inject.Inject
+
+
+const val tag = "NewsRepository"
 
 interface NewsRepository {
 
-    //    val articles: StateFlow<List<Article>>
     suspend fun refreshNews(): Flow<DataState<List<Article>>>
 
-    suspend fun getFavoriteArticles()
+    suspend fun getFavoriteArticles(): Flow<DataState<List<Article>>>
 
     suspend fun updateArticle(article: Article)
 }
@@ -38,10 +42,10 @@ class NewsRepositoryImpl @Inject constructor(
                         val result = dao.insertAll(networkArticles.map {
                             it.asDatabaseArticle()
                         })
-                        Log.d("NewsRepositoryImpl", "refreshNews: result = $result")
+                        Log.d(tag, "refreshNews: result = $result")
                     }
                 } catch (e: Exception) {
-                    Log.e("NewsRepositoryImpl", "refreshNews: error = ${e.message}")
+                    e.logStackTrace(tag)
                     emit(DataState.Error("Error fetching headlines"))
                 } finally {
                     val data = getAllArticlesFromDb()
@@ -51,14 +55,22 @@ class NewsRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getFavoriteArticles() {
-
+    override suspend fun getFavoriteArticles() =
         withContext(coroutineDispatcher) {
-            val likedArticles = dao.getLikedArticles().map {
-                it.asDomainModel()
+            flow {
+                try {
+                    emit(
+                        DataState.Success(
+                            dao.getLikedArticles().map {
+                                it.asDomainModel()
+                            })
+                    )
+                } catch (e: Exception) {
+                    e.logStackTrace(tag)
+                    emit(DataState.Error("Error fetching favorite articles"))
+                }
             }
         }
-    }
 
     override suspend fun updateArticle(article: Article) {
         withContext(coroutineDispatcher) {
@@ -67,9 +79,16 @@ class NewsRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun getAllArticlesFromDb(): List<Article> {
-        return dao.getAllArticles()
+    private suspend fun getAllArticlesFromDb() =
+        dao.getAllArticles()
             .map { it.asDomainModel() }
             .sortedBy { it.url }
-    }
+}
+
+
+fun Throwable.logStackTrace(tag: String) {
+    val sw = StringWriter()
+    this.printStackTrace(PrintWriter(sw))
+    val exceptionAsString = sw.toString()
+    Log.e(tag, exceptionAsString)
 }

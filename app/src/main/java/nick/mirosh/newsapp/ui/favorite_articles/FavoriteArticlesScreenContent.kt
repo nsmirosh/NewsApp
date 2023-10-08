@@ -26,9 +26,8 @@ fun FavoriteArticlesScreenContent(
     modifier: Modifier = Modifier,
     viewModel: FavoriteArticlesViewModel,
 ) {
-//    val articles by viewModel.articles.collectAsStateWithLifecycle(listOf())
+    val articles by viewModel.articles.collectAsStateWithLifecycle(listOf())
 
-    val articles = listOf<Article>()
     if (articles.isNotEmpty()) {
 
         LazyColumn {

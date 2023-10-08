@@ -13,10 +13,10 @@ interface ArticleDao {
     suspend fun getAllArticles():  List<DatabaseArticle>
 
     @Query("SELECT * FROM articles WHERE liked = 1")
-    fun getLikedArticles(): List<DatabaseArticle>
+    suspend fun getLikedArticles(): List<DatabaseArticle>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertAll(articles: List<DatabaseArticle>): List<Long>
+    suspend fun insertAll(articles: List<DatabaseArticle>): List<Long>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(article: DatabaseArticle)

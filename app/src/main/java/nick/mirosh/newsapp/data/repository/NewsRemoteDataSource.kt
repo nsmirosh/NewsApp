@@ -5,8 +5,8 @@ import nick.mirosh.newsapp.networking.NewsService
 import javax.inject.Inject
 
 class NewsRemoteDataSource @Inject constructor(private val newsService: NewsService) {
-    fun getHeadlines(): List<NetworkArticle>? {
-        val response = newsService.getHeadlines("us").execute().body()
-        return response?.articles
+    suspend fun getHeadlines(): List<NetworkArticle> {
+        val response = newsService.getHeadlines("us")
+        return response.articles
     }
 }
