@@ -20,18 +20,15 @@ import javax.inject.Inject
 const val tag = "NewsRepository"
 
 interface NewsRepository {
-
     suspend fun refreshNews(): Flow<DataState<List<Article>>>
-
     suspend fun getFavoriteArticles(): Flow<DataState<List<Article>>>
-
-    suspend fun updateArticle(article: Article)
+    suspend fun updateArticle(article: Article): Flow<DataState<Article>>
 }
 
 class NewsRepositoryImpl @Inject constructor(
     @IoDispatcher private val coroutineDispatcher: CoroutineDispatcher,
     private val newsDataSource: NewsRemoteDataSource? = null,
-    private val dao: ArticleDao
+    private val newsLocalDataSource: ArticleDao
 ) : NewsRepository {
     override suspend fun refreshNews(): Flow<DataState<List<Article>>> {
         return withContext(coroutineDispatcher) {
@@ -39,7 +36,7 @@ class NewsRepositoryImpl @Inject constructor(
                 try {
                     val networkArticles = newsDataSource?.getHeadlines() ?: emptyList()
                     if (networkArticles.isNotEmpty()) {
-                        val result = dao.insertAll(networkArticles.map {
+                        val result = newsLocalDataSource.insertAll(networkArticles.map {
                             it.asDatabaseArticle()
                         })
                         Log.d(tag, "refreshNews: result = $result")
@@ -61,7 +58,7 @@ class NewsRepositoryImpl @Inject constructor(
                 try {
                     emit(
                         DataState.Success(
-                            dao.getLikedArticles().map {
+                            newsLocalDataSource.getLikedArticles().map {
                                 it.asDomainModel()
                             })
                     )
@@ -72,15 +69,26 @@ class NewsRepositoryImpl @Inject constructor(
             }
         }
 
-    override suspend fun updateArticle(article: Article) {
-        withContext(coroutineDispatcher) {
-            dao.insert(article.asDatabaseModel())
-            getAllArticlesFromDb()
+    override suspend fun updateArticle(article: Article): Flow<DataState<Article>> {
+        return withContext(coroutineDispatcher) {
+            flow {
+                try {
+                    val updatedRowId = newsLocalDataSource.insert(article.asDatabaseModel())
+                    if (updatedRowId == -1L) {
+                        emit(DataState.Error("Error updating article"))
+                        return@flow
+                    }
+                    emit(DataState.Success(article))
+                } catch (e: Exception) {
+                    e.logStackTrace(tag)
+                    emit(DataState.Error("Error updating article"))
+                }
+            }
         }
     }
 
     private suspend fun getAllArticlesFromDb() =
-        dao.getAllArticles()
+        newsLocalDataSource.getAllArticles()
             .map { it.asDomainModel() }
             .sortedBy { it.url }
 }

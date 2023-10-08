@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
 
                             MainScreenContent(
                                 viewModel = viewModel,
-                                onClick = {
+                                onArticleClick = {
                                     val encodedUrl =
                                         URLEncoder.encode(it.url, StandardCharsets.UTF_8.toString())
 

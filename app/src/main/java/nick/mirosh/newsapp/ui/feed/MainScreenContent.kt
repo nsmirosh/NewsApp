@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -49,7 +50,7 @@ import nick.mirosh.newsapp.ui.MainViewModel
 fun MainScreenContent(
     modifier: Modifier = Modifier,
     viewModel: MainViewModel = viewModel(),
-    onClick: (Article) -> Unit,
+    onArticleClick: (Article) -> Unit,
     onSavedArticlesClicked: () -> Unit
 ) {
     val articles by viewModel.articles.collectAsStateWithLifecycle(listOf())
@@ -57,8 +58,8 @@ fun MainScreenContent(
     Scaffold(
         content = {
             LazyColumn {
-                items(articles.size) { index ->
-                    ArticleItem(articles[index], onClick, viewModel::onLikeClick)
+                items(articles, key = { article -> article.url}) { article ->
+                    ArticleItem(article, onArticleClick, viewModel::onLikeClick)
                 }
             }
         },

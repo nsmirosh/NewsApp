@@ -19,8 +19,8 @@ interface ArticleDao {
     suspend fun insertAll(articles: List<DatabaseArticle>): List<Long>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(article: DatabaseArticle)
+    suspend fun insert(article: DatabaseArticle): Long
 
     @Delete
-    fun delete(article: DatabaseArticle)
+    suspend fun delete(article: DatabaseArticle)
 }

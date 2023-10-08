@@ -38,7 +38,7 @@ class RepositoryModule {
     ): NewsRepository {
         val repo = NewsRepositoryImpl(
             coroutineDispatcher = coroutineDispatcher,
-            dao = appDatabase
+            newsLocalDataSource = appDatabase
         )
         Log.d("RepositoryModule", "@Cache NewsRepository.hashCode = ${repo.hashCode()}")
         return repo

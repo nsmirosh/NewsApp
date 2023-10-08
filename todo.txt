@@ -13,6 +13,11 @@ Architecture
 
  UI and animations
 - [ ] fix the switching of the heart color
+    [ ] recompose only a single item instead of the whole column when it's liked
+- [ ] Add a nice animation when the user clicks on the heart
+
+Room
+[ ] - Check if room can expose flows and do it like that
 
 New functionality
 - [ ] rename favorites to "read later"
