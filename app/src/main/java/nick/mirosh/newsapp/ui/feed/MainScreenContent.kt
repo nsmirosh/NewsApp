@@ -2,13 +2,11 @@ package nick.mirosh.newsapp.ui.feed
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -18,33 +16,23 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -126,27 +114,33 @@ fun ArticleItem(
                 lineHeight = 18.sp,
                 fontSize = 14.sp
             )
-            IconButton(
-                onClick = {
-                    onLikeCLick(article)
-                    mToast(mContext)
-
-                },
-                modifier = Modifier.align(Alignment.BottomEnd)
-            ) {
-
-                Log.d("ArticleItem", "is article liked: ${article.liked}")
-                Icon(
-                    imageVector = if (article.liked) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                    contentDescription = "Favorite",
-                    tint = if (article.liked) Color.Red else Color.Black,
-                    modifier = Modifier.size(24.dp)
-                )
+            LikeButton(liked = article.liked) {
+                onLikeCLick(article)
             }
         }
     }
 }
 
+
+@Composable
+fun BoxScope.LikeButton(
+    liked: Boolean,
+    onLikeCLick: () -> Unit
+) {
+    IconButton(
+        onClick = {
+            onLikeCLick()
+        },
+        modifier = Modifier.align(Alignment.BottomEnd)
+    ) {
+        Icon(
+            imageVector = if (liked) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+            contentDescription = "Favorite",
+            tint = if (liked) Color.Red else Color.Black,
+            modifier = Modifier.size(24.dp)
+        )
+    }
+}
 
 
 private fun mToast(context: Context) {

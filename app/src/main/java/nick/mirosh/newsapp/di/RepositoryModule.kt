@@ -33,7 +33,6 @@ class RepositoryModule {
     @Cache
     @Provides
     fun provideCacheNewsRepository(
-
         @DefaultDispatcher coroutineDispatcher: CoroutineDispatcher,
         appDatabase: ArticleDao
     ): NewsRepository {
