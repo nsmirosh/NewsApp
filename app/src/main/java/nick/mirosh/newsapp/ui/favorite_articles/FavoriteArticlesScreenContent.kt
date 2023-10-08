@@ -19,14 +19,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import nick.mirosh.newsapp.entity.Article
 
 @Composable
 fun FavoriteArticlesScreenContent(
     modifier: Modifier = Modifier,
     viewModel: FavoriteArticlesViewModel,
 ) {
-    val articles by viewModel.articles.collectAsStateWithLifecycle(listOf())
+//    val articles by viewModel.articles.collectAsStateWithLifecycle(listOf())
 
+    val articles = listOf<Article>()
     if (articles.isNotEmpty()) {
 
         LazyColumn {

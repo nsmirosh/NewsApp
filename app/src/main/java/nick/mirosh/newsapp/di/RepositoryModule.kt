@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
+import kotlinx.coroutines.CoroutineDispatcher
 import nick.mirosh.newsapp.data.repository.NewsRemoteDataSource
 import nick.mirosh.newsapp.data.repository.NewsRepository
 import nick.mirosh.newsapp.data.repository.NewsRepositoryImpl
@@ -16,10 +17,12 @@ class RepositoryModule {
     @Universal
     @Provides
     fun provideNewsRepository(
+        @DefaultDispatcher coroutineDispatcher: CoroutineDispatcher,
         newsRemoteDataSource: NewsRemoteDataSource,
         appDatabase: ArticleDao
     ): NewsRepository {
-        val repo =  NewsRepositoryImpl(
+        val repo = NewsRepositoryImpl(
+            coroutineDispatcher,
             newsRemoteDataSource,
             appDatabase
         )
@@ -30,10 +33,12 @@ class RepositoryModule {
     @Cache
     @Provides
     fun provideCacheNewsRepository(
+
+        @DefaultDispatcher coroutineDispatcher: CoroutineDispatcher,
         appDatabase: ArticleDao
     ): NewsRepository {
-
-        val repo =  NewsRepositoryImpl(
+        val repo = NewsRepositoryImpl(
+            coroutineDispatcher = coroutineDispatcher,
             dao = appDatabase
         )
         Log.d("RepositoryModule", "@Cache NewsRepository.hashCode = ${repo.hashCode()}")

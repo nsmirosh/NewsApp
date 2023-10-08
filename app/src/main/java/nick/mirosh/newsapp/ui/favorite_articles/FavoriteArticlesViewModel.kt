@@ -13,7 +13,6 @@ import javax.inject.Inject
 class FavoriteArticlesViewModel @Inject constructor(
     @Cache private val newsRepository: NewsRepository,
 ) : ViewModel() {
-    val articles = newsRepository.articles
 
     init {
         viewModelScope.launch {

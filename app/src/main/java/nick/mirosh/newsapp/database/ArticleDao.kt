@@ -10,7 +10,7 @@ import nick.mirosh.newsapp.entity.DatabaseArticle
 @Dao
 interface ArticleDao {
     @Query("SELECT * FROM articles")
-    fun getAllArticles():  List<DatabaseArticle>
+    suspend fun getAllArticles():  List<DatabaseArticle>
 
     @Query("SELECT * FROM articles WHERE liked = 1")
     fun getLikedArticles(): List<DatabaseArticle>
