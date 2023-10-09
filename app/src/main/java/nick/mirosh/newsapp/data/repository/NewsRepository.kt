@@ -12,6 +12,7 @@ import nick.mirosh.newsapp.entity.Article
 import nick.mirosh.newsapp.entity.asDatabaseArticle
 import nick.mirosh.newsapp.entity.asDatabaseModel
 import nick.mirosh.newsapp.entity.asDomainModel
+import nick.mirosh.newsapp.utils.logStackTrace
 import java.io.PrintWriter
 import java.io.StringWriter
 import javax.inject.Inject
@@ -94,9 +95,4 @@ class NewsRepositoryImpl @Inject constructor(
 }
 
 
-fun Throwable.logStackTrace(tag: String) {
-    val sw = StringWriter()
-    this.printStackTrace(PrintWriter(sw))
-    val exceptionAsString = sw.toString()
-    Log.e(tag, exceptionAsString)
-}
+

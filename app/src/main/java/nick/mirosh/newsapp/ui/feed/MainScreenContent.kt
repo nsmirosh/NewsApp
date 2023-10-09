@@ -53,8 +53,9 @@ fun MainScreenContent(
     onArticleClick: (Article) -> Unit,
     onSavedArticlesClicked: () -> Unit
 ) {
-    val articles by viewModel.articles.collectAsStateWithLifecycle(listOf())
+//    val articles by viewModel.articles.collectAsStateWithLifecycle(listOf())
 
+    val articles = viewModel.articles3
     Scaffold(
         content = {
             LazyColumn {

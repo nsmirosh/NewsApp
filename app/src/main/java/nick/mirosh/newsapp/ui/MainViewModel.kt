@@ -1,6 +1,7 @@
 package nick.mirosh.newsapp.ui
 
 import android.util.Log
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,6 +19,9 @@ class MainViewModel @Inject constructor(
     @Universal private val newsRepository: NewsRepository,
 ) : ViewModel() {
 
+    private val _articles3 = mutableStateListOf<Article>()
+    val articles3 = _articles3
+
     private val _articles: MutableStateFlow<List<Article>> = MutableStateFlow(listOf())
     val articles: Flow<List<Article>> = _articles
 
@@ -26,7 +30,9 @@ class MainViewModel @Inject constructor(
             newsRepository.refreshNews().collect { state ->
                 when (state) {
                     is DataState.Success -> {
-                        _articles.emit(state.data)
+
+                        _articles3.addAll(state.data)
+//                        _articles.emit(state.data)
                     }
 
                     is DataState.Error -> Log.e("MainViewModel", "Error: ${state.message}")
@@ -36,7 +42,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun getUpdatedList(updatedArticle: Article): List<Article> {
+    private fun getUpdatedList(updatedArticle: Article): List<Article> {
         val currentList = _articles.value.toMutableList()
         val index = currentList.indexOfFirst { it.url == updatedArticle.url }
         if (index != -1) {
@@ -45,17 +51,22 @@ class MainViewModel @Inject constructor(
         return currentList
     }
 
+    //https://stackoverflow.com/questions/74699081/jetpack-compose-lazy-column-all-items-recomposes-when-a-single-item-update
     fun onLikeClick(article: Article) {
         viewModelScope.launch {
-            newsRepository.updateArticle(article.copy(liked = !article.liked)).collect {
-                when (it) {
-                    is DataState.Success -> {
-                        _articles.value = getUpdatedList(it.data)
+            newsRepository.updateArticle(article.copy(liked = !article.liked))
+                .collect { dataState ->
+                    when (dataState) {
+                        is DataState.Success -> {
+                            val updatedArticle = dataState.data
+                            val index = articles3.indexOfFirst { it.url == updatedArticle.url }
+                            _articles3[index] = updatedArticle
+                        }
+
+                        is DataState.Error -> Log.e("MainViewModel", "Error: ${dataState.message}")
+                        else -> Log.d("MainViewModel", "Something else happened")
                     }
-                    is DataState.Error -> Log.e("MainViewModel", "Error: ${it.message}")
-                    else -> Log.d("MainViewModel", "Something else happened")
                 }
-            }
         }
     }
 }

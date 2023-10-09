@@ -1,28 +1,30 @@
 Test
-- [ ] Add tests
+[ ] Add tests
 
 CI / CD
-- [ ] Add Github Actions
+[ ] Add Github Actions
 
 Clear README
-- [ ] Add a clear README with description
+[ ] Add a clear README with description
 
 Architecture
-- [ ] Add a UIState class and add the layer
-- [ ] Separate everything into separate modules
+[ ] Add a UIState class and add the layer
+[ ] Separate everything into separate modules
 
  UI and animations
-- [ ] fix the switching of the heart color
-    [ ] recompose only a single item instead of the whole column when it's liked
-- [ ] Add a nice animation when the user clicks on the heart
+[ ] fix the switching of the heart color
+https://stackoverflow.com/questions/74699081/jetpack-compose-lazy-column-all-items-recomposes-when-a-single-item-update
+  [ ] recompose only a single item instead of the whole column when it's liked -
+
+[ ] Add a nice animation when the user clicks on the heart
 
 Room
 [ ] - Check if room can expose flows and do it like that
 
 New functionality
-- [ ] rename favorites to "read later"
-- [ ] Add a search bar to search for news
-- [ ] Add a filter to filter news by category
-- [ ] Add a filter to filter news by country
-- [ ] Add a filter to filter news by language
--
+[ ] rename favorites to "read later"
+[ ] Add a search bar to search for news
+[ ] Add a filter to filter news by category
+[ ] Add a filter to filter news by country
+[ ] Add a filter to filter news by language
+
