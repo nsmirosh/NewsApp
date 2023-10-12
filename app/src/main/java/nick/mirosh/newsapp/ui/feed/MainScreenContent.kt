@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import nick.mirosh.newsapp.R
-import nick.mirosh.newsapp.entity.Article
+import nick.mirosh.newsapp.domain.models.Article
 import nick.mirosh.newsapp.ui.MainViewModel
 
 

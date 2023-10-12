@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import nick.mirosh.newsapp.domain.DomainState
 import nick.mirosh.newsapp.domain.usecase.articles.FetchFavoriteArticlesUsecase
-import nick.mirosh.newsapp.entity.Article
+import nick.mirosh.newsapp.domain.models.Article
 import javax.inject.Inject
 
 @HiltViewModel

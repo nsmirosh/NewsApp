@@ -1,8 +1,8 @@
-package nick.mirosh.newsapp.database
+package nick.mirosh.newsapp.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import nick.mirosh.newsapp.entity.DatabaseArticle
+import nick.mirosh.newsapp.data.models.DatabaseArticle
 
 const val DATABASE_NAME = "articles-db"
 

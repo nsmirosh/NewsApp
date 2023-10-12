@@ -1,4 +1,6 @@
-package nick.mirosh.newsapp.entity
+package nick.mirosh.newsapp.data.models
+
+import nick.mirosh.newsapp.domain.models.Article
 
 data class ArticleDTO(
     val author: String? = null,

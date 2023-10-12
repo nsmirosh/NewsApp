@@ -1,9 +1,9 @@
 package nick.mirosh.newsapp.domain.mapper.news
 
 import nick.mirosh.newsapp.domain.mapper.BaseMapper
-import nick.mirosh.newsapp.entity.Article
-import nick.mirosh.newsapp.entity.DatabaseArticle
-import nick.mirosh.newsapp.entity.asDatabaseModel
+import nick.mirosh.newsapp.domain.models.Article
+import nick.mirosh.newsapp.data.models.DatabaseArticle
+import nick.mirosh.newsapp.domain.models.asDatabaseModel
 import javax.inject.Inject
 
 class DomaintoDatabaseArticleMapper @Inject constructor() : BaseMapper<List<Article>, List<DatabaseArticle>>() {

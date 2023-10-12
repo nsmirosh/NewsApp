@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import nick.mirosh.newsapp.domain.DomainState
 import nick.mirosh.newsapp.domain.usecase.articles.FetchArticlesUsecase
 import nick.mirosh.newsapp.domain.usecase.articles.LikeArticleUsecase
-import nick.mirosh.newsapp.entity.Article
+import nick.mirosh.newsapp.domain.models.Article
 import javax.inject.Inject
 
 @HiltViewModel

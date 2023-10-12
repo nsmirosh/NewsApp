@@ -1,4 +1,4 @@
-package nick.mirosh.newsapp.entity
+package nick.mirosh.newsapp.data.models
 
 data class ApiResponse<T> (
     val status: String,

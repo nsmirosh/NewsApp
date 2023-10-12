@@ -1,11 +1,11 @@
 package nick.mirosh.newsapp.data.repository
 
-import nick.mirosh.newsapp.database.ArticleDao
+import nick.mirosh.newsapp.data.database.ArticleDao
 import nick.mirosh.newsapp.domain.DomainState
 import nick.mirosh.newsapp.domain.mapper.news.DTOtoDatabaseArticleMapper
 import nick.mirosh.newsapp.domain.mapper.news.DatabaseToDomainArticleMapper
-import nick.mirosh.newsapp.entity.Article
-import nick.mirosh.newsapp.entity.asDatabaseModel
+import nick.mirosh.newsapp.domain.models.Article
+import nick.mirosh.newsapp.domain.models.asDatabaseModel
 import nick.mirosh.newsapp.utils.logStackTrace
 import javax.inject.Inject
 

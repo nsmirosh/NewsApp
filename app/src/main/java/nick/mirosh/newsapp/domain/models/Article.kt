@@ -1,4 +1,7 @@
-package nick.mirosh.newsapp.entity
+package nick.mirosh.newsapp.domain.models
+
+import nick.mirosh.newsapp.data.models.ArticleDTO
+import nick.mirosh.newsapp.data.models.DatabaseArticle
 
 data class Article(
     val author: String,

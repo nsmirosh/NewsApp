@@ -7,9 +7,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import nick.mirosh.newsapp.database.AppDatabase
-import nick.mirosh.newsapp.database.ArticleDao
-import nick.mirosh.newsapp.database.DATABASE_NAME
+import nick.mirosh.newsapp.data.database.AppDatabase
+import nick.mirosh.newsapp.data.database.ArticleDao
+import nick.mirosh.newsapp.data.database.DATABASE_NAME
 import javax.inject.Singleton
 
 @Module

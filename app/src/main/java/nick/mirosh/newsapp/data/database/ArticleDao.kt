@@ -1,11 +1,11 @@
-package nick.mirosh.newsapp.database
+package nick.mirosh.newsapp.data.database
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import nick.mirosh.newsapp.entity.DatabaseArticle
+import nick.mirosh.newsapp.data.models.DatabaseArticle
 
 @Dao
 interface ArticleDao {
