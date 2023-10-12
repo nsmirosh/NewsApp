@@ -1,4 +1,4 @@
-# NewsApp
+# Clean Architecture MVVM News App
 
 #### To make the app run:
 1. Create a local.properties file in the root of the project.
