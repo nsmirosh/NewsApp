@@ -5,5 +5,15 @@
 2. Add a line `API_KEY="your_newsapi.org_key_here"`
 
 
+#### This is a showcase app intended to for my own learning purposes and to demonstrate the usage of: 
 
-
+- Kotlin
+- Jetpack Compose + Compose navigation
+- MVVM Clean Architecture
+- Android architecture components
+- Modularization
+- Dependency Injection with Dagger Hilt
+- Coroutines + Flows
+- Retrofit
+- Room
+- Testing with Turbine, Mockito, JUnit
