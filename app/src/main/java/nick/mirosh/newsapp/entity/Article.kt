@@ -11,6 +11,16 @@ data class Article(
     val liked: Boolean = false,
 )
 
+fun Article.asDTO() = ArticleDTO(
+    author = author,
+    content = content,
+    description = description,
+    publishedAt = publishedAt,
+    title = title,
+    url = url,
+    urlToImage = urlToImage,
+)
+
 fun Article.asDatabaseModel() = DatabaseArticle(
     author = author,
     content = content,

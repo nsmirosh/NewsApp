@@ -28,6 +28,16 @@ fun DatabaseArticle.asDomainModel() = Article(
     liked = liked,
 )
 
+fun DatabaseArticle.asDTO() = ArticleDTO(
+    author = author,
+    content = content,
+    description = description,
+    publishedAt = publishedAt,
+    title = title,
+    url = url,
+    urlToImage = urlToImage,
+    liked = liked,
+)
 
 fun List<DatabaseArticle>.asDomainModel(): List<Article> {
     return map {

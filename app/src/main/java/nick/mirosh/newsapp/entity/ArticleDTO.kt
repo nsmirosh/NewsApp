@@ -1,6 +1,6 @@
 package nick.mirosh.newsapp.entity
 
-data class NetworkArticle(
+data class ArticleDTO(
     val author: String? = null,
     val content: String? = null,
     val description: String? = null,
@@ -8,8 +8,9 @@ data class NetworkArticle(
     val title: String? = null,
     val url: String? = null,
     val urlToImage: String? = null,
+    val liked: Boolean? = null
 )
-fun NetworkArticle.asDatabaseArticle() = DatabaseArticle(
+fun ArticleDTO.asDatabaseModel() = DatabaseArticle(
     author = author.orEmpty(),
     content = content.orEmpty(),
     description = description.orEmpty(),
@@ -19,3 +20,12 @@ fun NetworkArticle.asDatabaseArticle() = DatabaseArticle(
     urlToImage = urlToImage.orEmpty(),
 )
 
+fun ArticleDTO.asDomainModel() = Article(
+    author = author.orEmpty(),
+    content = content.orEmpty(),
+    description = description.orEmpty(),
+    publishedAt = publishedAt.orEmpty(),
+    title = title.orEmpty(),
+    url = url.orEmpty(),
+    urlToImage = urlToImage.orEmpty(),
+)
