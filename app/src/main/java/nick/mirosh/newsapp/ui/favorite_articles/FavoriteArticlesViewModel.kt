@@ -7,37 +7,31 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import nick.mirosh.newsapp.data.DataState
-import nick.mirosh.newsapp.data.repository.NewsRepository
-import nick.mirosh.newsapp.di.Cache
+import nick.mirosh.newsapp.domain.DomainState
+import nick.mirosh.newsapp.domain.usecase.articles.FetchFavoriteArticlesUsecase
 import nick.mirosh.newsapp.entity.Article
 import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteArticlesViewModel @Inject constructor(
-    @Cache private val newsRepository: NewsRepository,
+    private val fetchFavoriteArticlesUsecase: FetchFavoriteArticlesUsecase
 ) : ViewModel() {
     private val _articles: MutableStateFlow<List<Article>> = MutableStateFlow(listOf())
     val articles: Flow<List<Article>> = _articles
 
     init {
         viewModelScope.launch {
-            Log.d(
-                "FavoriteArticlesViewModel",
-                "@Cache newsRepository.hashCode = ${newsRepository.hashCode()}"
-            )
-            newsRepository.getFavoriteArticles().collect { data ->
-                when (data) {
-                    is DataState.Success -> {
-                        _articles.emit(data.data)
-                    }
+            when (val result = fetchFavoriteArticlesUsecase.invoke()) {
+                is DomainState.Success -> {
+                    _articles.emit(result.data)
+                }
 
-                    is DataState.Error -> {
+                is DomainState.Error -> {
+                    Log.d("FavoriteArticlesViewModel", "Error")
+                }
 
-                    }
-                    else -> {
-
-                    }
+                else -> {
+                    Log.d("FavoriteArticlesViewModel", "Something else happened")
                 }
             }
         }

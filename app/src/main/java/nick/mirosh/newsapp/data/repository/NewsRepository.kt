@@ -1,8 +1,5 @@
 package nick.mirosh.newsapp.data.repository
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import nick.mirosh.newsapp.data.DataState
 import nick.mirosh.newsapp.database.ArticleDao
 import nick.mirosh.newsapp.domain.DomainState
 import nick.mirosh.newsapp.domain.mapper.news.DTOtoDatabaseArticleMapper
@@ -16,8 +13,8 @@ import javax.inject.Inject
 const val tag = "NewsRepository"
 
 interface NewsRepository {
-    suspend fun refreshNews(): DomainState<List<Article>>
-    suspend fun getFavoriteArticles(): Flow<DataState<List<Article>>>
+    suspend fun getNewsArticles(): DomainState<List<Article>>
+    suspend fun getFavoriteArticles(): DomainState<List<Article>>
     suspend fun updateArticle(article: Article): DomainState<Article>
 }
 
@@ -27,7 +24,7 @@ class NewsRepositoryImpl @Inject constructor(
     private val databaseToDomainArticleMapper: DatabaseToDomainArticleMapper,
     private val dtoToDatabaseArticleMapper: DTOtoDatabaseArticleMapper,
 ) : NewsRepository {
-    override suspend fun refreshNews(): DomainState<List<Article>> {
+    override suspend fun getNewsArticles(): DomainState<List<Article>> {
         return try {
             newsRemoteDataSource?.getHeadlines()?.let {
                 newsLocalDataSource.insertAll(dtoToDatabaseArticleMapper.map(it))
@@ -43,19 +40,15 @@ class NewsRepositoryImpl @Inject constructor(
 
 
     override suspend fun getFavoriteArticles() =
-        flow {
-            try {
-                emit(
-                    DataState.Success(
-                        databaseToDomainArticleMapper.map(
-                            newsLocalDataSource.getLikedArticles()
-                        )
-                    )
+        try {
+            DomainState.Success(
+                databaseToDomainArticleMapper.map(
+                    newsLocalDataSource.getLikedArticles()
                 )
-            } catch (e: Exception) {
-                e.logStackTrace(tag)
-                emit(DataState.Error("Error fetching favorite articles"))
-            }
+            )
+        } catch (e: Exception) {
+            e.logStackTrace(tag)
+            DomainState.Error("Error fetching favorite articles")
         }
 
     override suspend fun updateArticle(article: Article) =
