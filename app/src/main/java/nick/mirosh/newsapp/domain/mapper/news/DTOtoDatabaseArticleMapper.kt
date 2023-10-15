@@ -3,6 +3,7 @@ package nick.mirosh.newsapp.domain.mapper.news
 import nick.mirosh.newsapp.domain.mapper.BaseMapper
 import nick.mirosh.newsapp.data.models.ArticleDTO
 import nick.mirosh.newsapp.data.models.DatabaseArticle
+import nick.mirosh.newsapp.data.models.asDatabaseModel
 import nick.mirosh.newsapp.domain.models.asDatabaseModel
 import javax.inject.Inject
 

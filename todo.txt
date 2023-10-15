@@ -1,5 +1,9 @@
 Test
 [ ] Add tests
+  [ ] Add dependencies
+  [ ] Add unit tests
+  [ ] Add UI tests
+  [ ] Update README with implementation details
 
 CI / CD
 [ ] Add Github Actions
@@ -8,6 +12,8 @@ Clear README
 [ ] Add a clear README with description
 
 Architecture
+[x] Separate everything into data, ui and domain packages
+[x] Add the mappers and Domain State between layers
 [ ] Add a UIState class and add the layer
 [ ] Separate everything into separate modules
 
@@ -15,6 +21,7 @@ Architecture
 [ ] fix the switching of the heart color
 https://stackoverflow.com/questions/74699081/jetpack-compose-lazy-column-all-items-recomposes-when-a-single-item-update
   [ ] recompose only a single item instead of the whole column when it's liked -
+[ ] add my smiley face animation as a loading animation initially
 
 [ ] Add a nice animation when the user clicks on the heart
 
