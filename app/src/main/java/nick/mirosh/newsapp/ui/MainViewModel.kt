@@ -31,7 +31,10 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = FeedUIState.Loading
             _uiState.value = when (val result = fetchArticlesUsecase()) {
-                is DomainState.Success -> FeedUIState.Feed(result.data)
+                is DomainState.Success ->  {
+                    _articles.addAll(result.data)
+                    FeedUIState.Feed(_articles)
+                }
                 is DomainState.Loading -> FeedUIState.Loading
                 else -> FeedUIState.Failed
             }
@@ -42,14 +45,13 @@ class MainViewModel @Inject constructor(
     fun onLikeClick(article: Article) {
         viewModelScope.launch {
             val parameters = article.copy(liked = !article.liked)
-            when (val result = likeArticleUsecase(parameters)) {
+            when (val updatedArticle = likeArticleUsecase(parameters)) {
                 is DomainState.Success -> {
-                    val updatedArticle = result.data
-                    val index = articles.indexOfFirst { it.url == updatedArticle.url }
-                    _articles[index] = updatedArticle
+                    val index = articles.indexOfFirst { it.url == updatedArticle.data.url }
+                    _articles[index] = updatedArticle.data
                 }
 
-                is DomainState.Error -> Log.e("MainViewModel", "Error: ${result.message}")
+                is DomainState.Error -> Log.e("MainViewModel", "Error: ${updatedArticle.message}")
                 else -> Log.d("MainViewModel", "Something else happened")
             }
         }

@@ -6,10 +6,12 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import nick.mirosh.newsapp.domain.DomainState
 import nick.mirosh.newsapp.domain.usecase.articles.FetchFavoriteArticlesUsecase
 import nick.mirosh.newsapp.domain.models.Article
+import nick.mirosh.newsapp.ui.feed.FeedUIState
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,6 +20,9 @@ class FavoriteArticlesViewModel @Inject constructor(
 ) : ViewModel() {
     private val _articles: MutableStateFlow<List<Article>> = MutableStateFlow(listOf())
     val articles: Flow<List<Article>> = _articles
+
+    private val _uiState = MutableStateFlow<FeedUIState>(FeedUIState.Idle)
+    val uiState: StateFlow<FeedUIState> = _uiState
 
     init {
         viewModelScope.launch {

@@ -90,7 +90,7 @@ fun MainScreenContent(
 
             is FeedUIState.Feed -> {
                 ArticleFeed(
-                    articles = checkoutInfo,
+                    articles = articles,
                     onArticleClick = onArticleClick,
                     onLikeClick = viewModel::onLikeClick,
                     onSavedArticlesClicked = onSavedArticlesClicked

@@ -14,7 +14,9 @@ Clear README
 Architecture
 [x] Separate everything into data, ui and domain packages
 [x] Add the mappers and Domain State between layers
-[ ] Add a UIState class and add the layer
+[x] Add a UIState class and add the layer
+[ ] Watch this video on UI architecture - https://www.youtube.com/watch?v=p9VR8KbmzEE&ab_channel=AndroidDevelopers
+[ ] Read through this - https://developer.android.com/topic/architecture/ui-layer
 [ ] Separate everything into separate modules
 
  UI and animations
@@ -27,6 +29,11 @@ https://stackoverflow.com/questions/74699081/jetpack-compose-lazy-column-all-ite
 
 Room
 [ ] - Check if room can expose flows and do it like that
+
+
+Optimization
+[ ] - Analyze the app why it's skipping frames, etc.
+ [ ] - https://www.droidcon.com/2022/06/28/making-apps-blazing-fast-with-baseline-profiles/
 
 New functionality
 [ ] rename favorites to "read later"

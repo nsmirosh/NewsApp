@@ -38,6 +38,13 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
+        }
+        defaultConfig {
+            val properties = Properties()
+            properties.load(project.rootProject.file("local.properties").inputStream())
+            buildConfigField("String", "API_KEY", "\"${properties.getProperty("API_KEY")}\"")
+            buildConfigField("String", "BASE_URL", "\"https://newsapi.org/v2/\"")
         }
     }
     compileOptions {

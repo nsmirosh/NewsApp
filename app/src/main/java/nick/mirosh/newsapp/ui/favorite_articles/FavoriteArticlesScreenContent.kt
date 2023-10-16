@@ -49,6 +49,7 @@ fun FavoriteArticlesScreenContent(
                         contentDescription = "Translated description of what the image contains"
                     )
                     Text(
+
                         text = article.title,
                         lineHeight = 18.sp,
                         fontSize = 14.sp
