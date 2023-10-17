@@ -1,9 +1,13 @@
+
+![Github Actions workflow](https://github.com/github/docs/actions/workflows/ci.yml/badge.svg)
+
 # Clean Architecture MVVM News App
+
+### Set up: 
 
 #### To make the app run:
 1. Create a local.properties file in the root of the project.
 2. Add a line `API_KEY="your_newsapi.org_key_here"`
-
 
 #### This is a showcase app intended to for my own learning purposes and to demonstrate the usage of: 
 
@@ -17,3 +21,5 @@
 - Retrofit
 - Room
 - Testing with Turbine, Mockito, JUnit
+- CI / CD with Github Actions
+

@@ -5,8 +5,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import nick.mirosh.newsapp.BuildConfig
-import nick.mirosh.newsapp.networking.HeaderInterceptor
-import nick.mirosh.newsapp.networking.NewsService
+import nick.mirosh.newsapp.data.networking.HeaderInterceptor
+import nick.mirosh.newsapp.data.networking.NewsService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

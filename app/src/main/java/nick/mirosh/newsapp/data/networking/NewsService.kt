@@ -1,4 +1,4 @@
-package nick.mirosh.newsapp.networking
+package nick.mirosh.newsapp.data.networking
 
 import nick.mirosh.newsapp.data.models.ApiResponse
 import nick.mirosh.newsapp.data.models.ArticleDTO
