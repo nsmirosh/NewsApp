@@ -1,5 +1,5 @@
 
-![Github Actions workflow](https://github.com/github/docs/actions/workflows/ci.yml/badge.svg)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/nsmirosh/NewsApp/CI)
 
 # Clean Architecture MVVM News App
 
