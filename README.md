@@ -1,7 +1,9 @@
 
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/nsmirosh/NewsApp/ci.yml?branch=main)
 
 # Clean Architecture MVVM News App
+
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/nsmirosh/NewsApp/ci.yml?branch=main)
+![GitHub](https://img.shields.io/github/license/nsmirosh/NewsApp)
 
 ### Set up: 
 
