@@ -5,6 +5,10 @@
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/nsmirosh/NewsApp/ci.yml?branch=main)
 ![GitHub](https://img.shields.io/github/license/nsmirosh/NewsApp)
 
+### App description
+This is a really simple pet project that displays a list of news article from [NewsAPI.org](https://newsapi.org/).
+The app is written in Kotlin and uses Jetpack Compose for UI. It follows MVVM Clean Architecture and uses Android architecture components.
+
 ### Set up: 
 
 #### To make the app run:
