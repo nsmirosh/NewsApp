@@ -1,4 +1,4 @@
-package nick.mirosh.newsapp.networking
+package nick.mirosh.newsapp.data.networking
 
 import nick.mirosh.newsapp.BuildConfig
 import okhttp3.Interceptor
