@@ -24,12 +24,10 @@ Architecture
 https://stackoverflow.com/questions/74699081/jetpack-compose-lazy-column-all-items-recomposes-when-a-single-item-update
   [ ] recompose only a single item instead of the whole column when it's liked -
 [ ] add my smiley face animation as a loading animation initially
-
 [ ] Add a nice animation when the user clicks on the heart
 
 Room
 [ ] - Check if room can expose flows and do it like that
-
 
 Optimization
 [ ] - Analyze the app why it's skipping frames, etc.
