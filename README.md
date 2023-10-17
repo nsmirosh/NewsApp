@@ -1,5 +1,5 @@
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/nsmirosh/NewsApp/CI)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/nsmirosh/NewsApp/ci.yml?branch=main)
 
 # Clean Architecture MVVM News App
 

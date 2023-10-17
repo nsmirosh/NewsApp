@@ -6,10 +6,14 @@ Test
   [ ] Update README with implementation details
 
 CI / CD
-[ ] Add Github Actions
+[x] Add Github Actions
+  [x] Basic Github Actions Added
+  [x] Status icon added
+  [ ] Add a task for Unit tests
+  [ ] Add a task for UI tests
 
 Clear README
-[ ] Add a clear README with description
+[x] Add a clear README with description
 
 Architecture
 [x] Separate everything into data, ui and domain packages
