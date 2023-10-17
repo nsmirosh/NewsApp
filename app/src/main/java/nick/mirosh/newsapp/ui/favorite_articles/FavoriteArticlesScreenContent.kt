@@ -19,54 +19,78 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import nick.mirosh.newsapp.domain.models.Article
+import nick.mirosh.newsapp.ui.composables.FailedMessage
+import nick.mirosh.newsapp.ui.composables.LoadingProgressBar
 
 @Composable
 fun FavoriteArticlesScreenContent(
     modifier: Modifier = Modifier,
     viewModel: FavoriteArticlesViewModel,
 ) {
-    val articles by viewModel.articles.collectAsStateWithLifecycle(listOf())
 
-    if (articles.isNotEmpty()) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-        LazyColumn {
+    with(uiState) {
+        when (this) {
+            is FavoriteArticlesUIState.FavoriteArticles ->
+                Articles(articles)
 
-            items(articles.size) { index ->
-                val article = articles[index]
-                Row(
-                    modifier = Modifier.padding(8.dp, 4.dp, 8.dp, 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    AsyncImage(
-                        contentScale = ContentScale.FillBounds,
-                        modifier = Modifier
-                            .height(150.dp)
-                            .padding(8.dp)
-                            .width(200.dp)
-                            .clip(shape = RoundedCornerShape(8.dp)),
+            is FavoriteArticlesUIState.Idle ->
+                Text(text = "Idle")
 
-                        model = article.urlToImage,
-                        contentDescription = "Translated description of what the image contains"
-                    )
-                    Text(
+            is FavoriteArticlesUIState.Loading ->
+                LoadingProgressBar()
 
-                        text = article.title,
-                        lineHeight = 18.sp,
-                        fontSize = 14.sp
+            is FavoriteArticlesUIState.Failed ->
+                FailedMessage("Could not load favorite articles")
 
-                    )
-                }
+            is FavoriteArticlesUIState.FavoriteArticlesEmpty -> NoArticles()
+        }
+    }
+}
+
+@Composable
+fun Articles(articles: List<Article>) {
+    LazyColumn {
+        items(articles.size) { index ->
+            val article = articles[index]
+            Row(
+                modifier = Modifier.padding(8.dp, 4.dp, 8.dp, 4.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                AsyncImage(
+                    contentScale = ContentScale.FillBounds,
+                    modifier = Modifier
+                        .height(150.dp)
+                        .padding(8.dp)
+                        .width(200.dp)
+                        .clip(shape = RoundedCornerShape(8.dp)),
+
+                    model = article.urlToImage,
+                    contentDescription = "Translated description of what the image contains"
+                )
+                Text(
+
+                    text = article.title,
+                    lineHeight = 18.sp,
+                    fontSize = 14.sp
+
+                )
             }
         }
-    } else {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "No saved articles",
-                fontSize = 24.sp,
-            )
-        }
+    }
+}
+
+@Composable
+fun NoArticles() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = "No saved articles",
+            fontSize = 24.sp,
+        )
     }
 }

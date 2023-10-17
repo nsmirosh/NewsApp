@@ -18,22 +18,18 @@ import javax.inject.Inject
 class FavoriteArticlesViewModel @Inject constructor(
     private val fetchFavoriteArticlesUsecase: FetchFavoriteArticlesUsecase
 ) : ViewModel() {
-    private val _articles: MutableStateFlow<List<Article>> = MutableStateFlow(listOf())
-    val articles: Flow<List<Article>> = _articles
 
-    private val _uiState = MutableStateFlow<FeedUIState>(FeedUIState.Idle)
-    val uiState: StateFlow<FeedUIState> = _uiState
+    private val _uiState = MutableStateFlow<FavoriteArticlesUIState>(FavoriteArticlesUIState.Idle)
+    val uiState: StateFlow<FavoriteArticlesUIState> = _uiState
 
     init {
         viewModelScope.launch {
             when (val result = fetchFavoriteArticlesUsecase.invoke()) {
-                is DomainState.Success -> {
-                    _articles.emit(result.data)
-                }
+                is DomainState.Success ->
+                    _uiState.emit(FavoriteArticlesUIState.FavoriteArticles(result.data))
 
-                is DomainState.Error -> {
-                    Log.d("FavoriteArticlesViewModel", "Error")
-                }
+                is DomainState.Error ->
+                    Log.e("FavoriteArticlesViewModel", "Error = ${result.message}")
 
                 else -> {
                     Log.d("FavoriteArticlesViewModel", "Something else happened")

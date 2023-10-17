@@ -43,6 +43,8 @@ import coil.compose.AsyncImage
 import nick.mirosh.newsapp.R
 import nick.mirosh.newsapp.domain.models.Article
 import nick.mirosh.newsapp.ui.MainViewModel
+import nick.mirosh.newsapp.ui.composables.FailedMessage
+import nick.mirosh.newsapp.ui.composables.LoadingProgressBar
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -57,45 +59,16 @@ fun MainScreenContent(
 
     with(uiState) {
         when (this) {
-            is FeedUIState.Idle -> {
-                Text(text = "Idle")
-            }
-            is FeedUIState.Loading -> {
-                Box {
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .size(48.dp)
-                    )
-                }
-            }
-
-            is FeedUIState.Failed -> {
-                //create a red Text Composable
-                Box {
-                    Text(
-                        text = "Failed to load articles",
-                        style = TextStyle(
-                            color = Color.Red,
-                            fontSize = 18.sp,
-                            textAlign = TextAlign.Center,
-                            textDecoration = TextDecoration.Underline
-                        ),
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(16.dp)
-                    )
-                }
-            }
-
-            is FeedUIState.Feed -> {
+            is FeedUIState.Idle -> Text(text = "Idle")
+            is FeedUIState.Loading -> LoadingProgressBar()
+            is FeedUIState.Failed -> FailedMessage()
+            is FeedUIState.Feed ->
                 ArticleFeed(
                     articles = articles,
                     onArticleClick = onArticleClick,
                     onLikeClick = viewModel::onLikeClick,
                     onSavedArticlesClicked = onSavedArticlesClicked
                 )
-            }
         }
     }
 }
