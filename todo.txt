@@ -39,8 +39,8 @@ Optimization
 
 New functionality
 [ ] rename favorites to "read later"
-[ ] Add a search bar to search for news
-[ ] Add a filter to filter news by category
-[ ] Add a filter to filter news by country
-[ ] Add a filter to filter news by language
+[ ] Add network detection
 
+
+Build
+[ ] Migrate to catalog
