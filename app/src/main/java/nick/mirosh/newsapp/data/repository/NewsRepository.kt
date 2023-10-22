@@ -1,7 +1,8 @@
 package nick.mirosh.newsapp.data.repository
 
 import nick.mirosh.newsapp.data.database.ArticleDao
-import nick.mirosh.newsapp.domain.DomainState
+import nick.mirosh.newsapp.domain.ErrorType
+import nick.mirosh.newsapp.domain.Resource
 import nick.mirosh.newsapp.domain.mapper.news.DTOtoDatabaseArticleMapper
 import nick.mirosh.newsapp.domain.mapper.news.DatabaseToDomainArticleMapper
 import nick.mirosh.newsapp.domain.models.Article
@@ -13,9 +14,9 @@ import javax.inject.Inject
 const val tag = "NewsRepository"
 
 interface NewsRepository {
-    suspend fun getNewsArticles(): DomainState<List<Article>>
-    suspend fun getFavoriteArticles(): DomainState<List<Article>>
-    suspend fun updateArticle(article: Article): DomainState<Article>
+    suspend fun getNewsArticles(): Resource<List<Article>>
+    suspend fun getFavoriteArticles(): Resource<List<Article>>
+    suspend fun updateArticle(article: Article): Resource<Article>
 }
 
 class NewsRepositoryImpl @Inject constructor(
@@ -24,43 +25,43 @@ class NewsRepositoryImpl @Inject constructor(
     private val databaseToDomainArticleMapper: DatabaseToDomainArticleMapper,
     private val dtoToDatabaseArticleMapper: DTOtoDatabaseArticleMapper,
 ) : NewsRepository {
-    override suspend fun getNewsArticles(): DomainState<List<Article>> {
+    override suspend fun getNewsArticles(): Resource<List<Article>> {
         return try {
             newsRemoteDataSource?.getHeadlines()?.let {
                 newsLocalDataSource.insertAll(dtoToDatabaseArticleMapper.map(it))
             }
-            DomainState.Success(
+            Resource.Success(
                 databaseToDomainArticleMapper.map(getAllArticlesFromDb())
             )
         } catch (e: Exception) {
             e.logStackTrace(tag)
-            DomainState.Error("Error fetching headlines")
+            Resource.Error(ErrorType.General)
         }
     }
 
 
     override suspend fun getFavoriteArticles() =
         try {
-            DomainState.Success(
+            Resource.Success(
                 databaseToDomainArticleMapper.map(
                     newsLocalDataSource.getLikedArticles()
                 )
             )
         } catch (e: Exception) {
             e.logStackTrace(tag)
-            DomainState.Error("Error fetching favorite articles")
+            Resource.Error(ErrorType.General)
         }
 
     override suspend fun updateArticle(article: Article) =
         try {
             val updatedRowId = newsLocalDataSource.insert(article.asDatabaseModel())
             if (updatedRowId != -1L)
-                DomainState.Success(article)
+                Resource.Success(article)
             else
-                DomainState.Error("Error updating article")
+                Resource.Error(ErrorType.General)
         } catch (e: Exception) {
             e.logStackTrace(tag)
-            DomainState.Error("Error updating article")
+            Resource.Error(ErrorType.General)
         }
 
     private suspend fun getAllArticlesFromDb() =

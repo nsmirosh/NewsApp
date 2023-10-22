@@ -8,7 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import nick.mirosh.newsapp.domain.DomainState
+import nick.mirosh.newsapp.domain.Resource
 import nick.mirosh.newsapp.domain.usecase.articles.FetchArticlesUsecase
 import nick.mirosh.newsapp.domain.usecase.articles.LikeArticleUsecase
 import nick.mirosh.newsapp.domain.models.Article
@@ -31,11 +31,10 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = FeedUIState.Loading
             _uiState.value = when (val result = fetchArticlesUsecase()) {
-                is DomainState.Success ->  {
+                is Resource.Success ->  {
                     _articles.addAll(result.data)
                     FeedUIState.Feed(_articles)
                 }
-                is DomainState.Loading -> FeedUIState.Loading
                 else -> FeedUIState.Failed
             }
         }
@@ -45,14 +44,12 @@ class MainViewModel @Inject constructor(
     fun onLikeClick(article: Article) {
         viewModelScope.launch {
             val parameters = article.copy(liked = !article.liked)
-            when (val updatedArticle = likeArticleUsecase(parameters)) {
-                is DomainState.Success -> {
-                    val index = articles.indexOfFirst { it.url == updatedArticle.data.url }
-                    _articles[index] = updatedArticle.data
+            when (val result = likeArticleUsecase(parameters)) {
+                is Resource.Success -> {
+                    val index = articles.indexOfFirst { it.url == result.data.url }
+                    _articles[index] = result.data
                 }
-
-                is DomainState.Error -> Log.e("MainViewModel", "Error: ${updatedArticle.message}")
-                else -> Log.d("MainViewModel", "Something else happened")
+                is Resource.Error -> Log.e("MainViewModel", "Error: ${result.error}")
             }
         }
     }
