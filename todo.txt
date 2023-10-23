@@ -40,6 +40,7 @@ Optimization
 New functionality
 [ ] rename favorites to "read later"
 [ ] Add network detection
+[ ] Add "bubbles" with regions of the world
 
 
 Build

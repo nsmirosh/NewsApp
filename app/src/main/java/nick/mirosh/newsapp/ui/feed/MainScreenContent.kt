@@ -15,7 +15,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
@@ -32,9 +31,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -43,8 +39,8 @@ import coil.compose.AsyncImage
 import nick.mirosh.newsapp.R
 import nick.mirosh.newsapp.domain.models.Article
 import nick.mirosh.newsapp.ui.MainViewModel
+import nick.mirosh.newsapp.ui.animations.SmileyAnimation
 import nick.mirosh.newsapp.ui.composables.FailedMessage
-import nick.mirosh.newsapp.ui.composables.LoadingProgressBar
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -60,7 +56,7 @@ fun MainScreenContent(
     with(uiState) {
         when (this) {
             is FeedUIState.Idle -> Text(text = "Idle")
-            is FeedUIState.Loading -> LoadingProgressBar()
+            is FeedUIState.Loading -> /*LoadingProgressBar()*/SmileyAnimation()
             is FeedUIState.Failed -> FailedMessage()
             is FeedUIState.Feed ->
                 ArticleFeed(

@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -28,13 +29,20 @@ class MainViewModel @Inject constructor(
     val uiState: StateFlow<FeedUIState> = _uiState
 
     init {
+        fetchArticles()
+    }
+
+    fun fetchArticles() {
         viewModelScope.launch {
             _uiState.value = FeedUIState.Loading
+            //Just adding this for now to demonstrate the smiley loading animation
+            delay(2000)
             _uiState.value = when (val result = fetchArticlesUsecase()) {
-                is Resource.Success ->  {
+                is Resource.Success -> {
                     _articles.addAll(result.data)
                     FeedUIState.Feed(_articles)
                 }
+
                 else -> FeedUIState.Failed
             }
         }
@@ -49,6 +57,7 @@ class MainViewModel @Inject constructor(
                     val index = articles.indexOfFirst { it.url == result.data.url }
                     _articles[index] = result.data
                 }
+
                 is Resource.Error -> Log.e("MainViewModel", "Error: ${result.error}")
             }
         }
