@@ -30,7 +30,7 @@ enum class AnimationState {
 }
 
 @Composable
-fun SmileyAnimation() {
+fun SmileyProgressAnimation() {
     var animationState by remember {
         mutableStateOf(AnimationState.INITIAL)
     }
@@ -116,8 +116,7 @@ fun SmileyAnimationDrawer(animationState: AnimationState) {
                         cap = StrokeCap.Round
                     )
                 )
-            }
-            else {
+            } else {
                 val arcCenter =
                     Offset(animatedX3, 0f)
                 drawCircle(
