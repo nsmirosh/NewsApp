@@ -59,13 +59,9 @@ fun MainScreenContent(
     onArticleClick: (Article) -> Unit,
     onSavedArticlesClicked: () -> Unit
 ) {
-
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
     with(uiState) {
         when (this) {
-            is FeedUIState.Idle -> Text(text = "Idle")
-            is FeedUIState.Loading -> SmileyProgressAnimation()
             is FeedUIState.Failed -> FailedMessage()
             is FeedUIState.Feed ->
                 ArticleFeed(
@@ -74,7 +70,12 @@ fun MainScreenContent(
                     onLikeClick = viewModel::onLikeClick,
                     onSavedArticlesClicked = onSavedArticlesClicked
                 )
+
+            else -> {}
         }
+    }
+    AnimatedVisibility(visible = uiState == FeedUIState.Loading, enter = fadeIn(), exit = fadeOut()) {
+        SmileyProgressAnimation()
     }
 }
 

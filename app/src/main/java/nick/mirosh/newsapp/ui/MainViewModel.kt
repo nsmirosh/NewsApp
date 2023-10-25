@@ -32,12 +32,17 @@ class MainViewModel @Inject constructor(
         fetchArticles()
     }
 
-    fun fetchArticles() {
+    private fun fetchArticles() {
         viewModelScope.launch {
             _uiState.value = FeedUIState.Loading
             //Just adding this for now to demonstrate the smiley loading animation
             delay(2000)
-            _uiState.value = when (val result = fetchArticlesUsecase()) {
+
+            val result = fetchArticlesUsecase()
+            _uiState.value = FeedUIState.Idle
+            delay(400)
+
+            _uiState.value = when (result) {
                 is Resource.Success -> {
                     _articles.addAll(result.data)
                     FeedUIState.Feed(_articles)
