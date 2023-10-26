@@ -96,8 +96,8 @@ fun ArticleFeed(
 
     AnimatedVisibility(
         visible = isVisible,
-        enter = fadeIn(animationSpec = TweenSpec(durationMillis = 2000)),
-        exit = fadeOut(animationSpec = TweenSpec(durationMillis = 2000))
+        enter = fadeIn(),
+        exit = fadeOut(),
     ) {
         Scaffold(
             content = {

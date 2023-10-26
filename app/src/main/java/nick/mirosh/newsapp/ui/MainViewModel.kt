@@ -40,6 +40,7 @@ class MainViewModel @Inject constructor(
 
             val result = fetchArticlesUsecase()
             _uiState.value = FeedUIState.Idle
+            //adding a delay to demonstrate the smiley loading animation fade out
             delay(400)
 
             _uiState.value = when (result) {
