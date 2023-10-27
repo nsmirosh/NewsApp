@@ -53,12 +53,13 @@ class MainViewModelTest {
 
         //Act
         val viewModel = MainViewModel(fetchArticlesUsecase, likeArticleUsecase)
-        val emissions = viewModel.uiState.take(3).toList()
+        val emissions = viewModel.uiState.take(4).toList()
 
         //Assert
         assertEquals(FeedUIState.Idle, emissions[0])
         assertEquals(FeedUIState.Loading, emissions[1])
-        assertEquals(FeedUIState.Feed(articles), emissions[2])
+        assertEquals(FeedUIState.Idle, emissions[2])
+        assertEquals(FeedUIState.Feed(articles), emissions[3])
     }
 
     @Test
@@ -72,10 +73,10 @@ class MainViewModelTest {
         val viewModel = MainViewModel(fetchArticlesUsecase, likeArticleUsecase)
 
         //Assert
-        val emissions = viewModel.uiState.take(3).toList()
+        val emissions = viewModel.uiState.take(4).toList()
         assertEquals(
             expected,
-            emissions[2]
+            emissions[3]
         )
     }
 }
