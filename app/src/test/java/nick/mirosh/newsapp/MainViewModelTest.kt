@@ -3,6 +3,8 @@ package nick.mirosh.newsapp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -48,17 +50,15 @@ class MainViewModelTest {
         val articles = listOf<Article>()
         val result = Resource.Success(articles)
         `when`(fetchArticlesUsecase.invoke()).thenReturn(result)
-        val expected = FeedUIState.Feed(articles)
 
         //Act
         val viewModel = MainViewModel(fetchArticlesUsecase, likeArticleUsecase)
+        val emissions = viewModel.uiState.take(3).toList()
 
         //Assert
-        val actual = viewModel.uiState.first()
-        assertEquals(
-            expected,
-            actual
-        )
+        assertEquals(FeedUIState.Idle, emissions[0])
+        assertEquals(FeedUIState.Loading, emissions[1])
+        assertEquals(FeedUIState.Feed(articles), emissions[2])
     }
 
     @Test
@@ -66,54 +66,16 @@ class MainViewModelTest {
         //Arrange
         val result = Resource.Error(ErrorType.General)
         `when`(fetchArticlesUsecase.invoke()).thenReturn(result)
-        val expected = FeedUIState.Feed(listOf())
+        val expected = FeedUIState.Failed
 
         //Act
         val viewModel = MainViewModel(fetchArticlesUsecase, likeArticleUsecase)
 
-
         //Assert
-        val actual = viewModel.uiState.first()
-
+        val emissions = viewModel.uiState.take(3).toList()
         assertEquals(
             expected,
-            actual
+            emissions[2]
         )
-    }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @Test
-    fun init_getsTheArticleListWithFailure_sends3FailedEventToUI() = runTest{
-
-        // Arrange
-        val result = Resource.Error(ErrorType.General)
-        `when`(fetchArticlesUsecase.invoke()).thenReturn(result)
-
-        val emissions = mutableListOf<FeedUIState>()
-
-
-        var viewModel: MainViewModel? = null
-
-        // Launch a coroutine to collect emissions
-        val job = launch {
-            viewModel?.uiState?.collect {
-                emissions.add(it)
-            }
-        }
-
-        // Act
-        viewModel = MainViewModel(fetchArticlesUsecase, likeArticleUsecase)
-
-        // Allow coroutines to execute
-        advanceUntilIdle()
-
-        // Assert
-        assertTrue(emissions[0] is FeedUIState.Idle)
-        assertTrue(emissions[1] is FeedUIState.Loading)
-
-        // Clean up
-        job.cancel()
-        Dispatchers.resetMain() // Reset main dispatcher to the original dispatcher
-
     }
 }
