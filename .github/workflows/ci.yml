@@ -49,3 +49,10 @@ jobs:
       - name: Build Debug APK
         run: ./gradlew assembleDebug
 
+      - name: Upload to Appetize
+        uses: appetizeio/github-action-appetize@v1.0.0
+        with:
+          apiToken: ${{ secrets.APPETIZE_API_TOKEN }}
+          appFile: app/build/outputs/apk/debug/app-debug.apk
+          platform: 'android'
+
