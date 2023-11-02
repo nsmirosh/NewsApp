@@ -16,7 +16,7 @@ class LikeArticleUsecase @Inject constructor(
 
     suspend operator fun invoke(article: Article): Resource<Article> {
         return withContext(coroutineDispatcher) {
-            repository.updateArticle(article)
+            repository.updateArticle(article.copy(liked = !article.liked))
         }
     }
 }

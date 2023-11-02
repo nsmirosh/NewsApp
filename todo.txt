@@ -1,7 +1,9 @@
 Test
 [ ] Add tests
-  [ ] Add dependencies
+  [x] Add dependencies
   [ ] Add unit tests
+    [ ] MainViewModel Unit tests
+    [ ] FavoriteArticles ViewModel Unit tests
   [ ] Add UI tests
   [ ] Update README with implementation details
 
@@ -12,8 +14,9 @@ CI / CD
   [ ] Add a task for Unit tests
   [ ] Add a task for UI tests
 
-Clear README
+README
 [x] Add a clear README with description
+[ ] Add educational materials for each of the design decisions
 
 Architecture
 [x] Separate everything into data, ui and domain packages

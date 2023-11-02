@@ -14,6 +14,7 @@ import nick.mirosh.newsapp.domain.usecase.articles.FetchArticlesUsecase
 import nick.mirosh.newsapp.domain.usecase.articles.LikeArticleUsecase
 import nick.mirosh.newsapp.domain.models.Article
 import nick.mirosh.newsapp.ui.feed.FeedUIState
+import nick.mirosh.newsapp.utils.MyLogger
 import javax.inject.Inject
 
 @HiltViewModel
@@ -45,8 +46,9 @@ class MainViewModel @Inject constructor(
 
             _uiState.value = when (result) {
                 is Resource.Success -> {
+                    _articles.clear()
                     _articles.addAll(result.data)
-                    FeedUIState.Feed(_articles)
+                    FeedUIState.Feed(articles)
                 }
 
                 else -> FeedUIState.Failed
@@ -57,14 +59,15 @@ class MainViewModel @Inject constructor(
     //https://stackoverflow.com/questions/74699081/jetpack-compose-lazy-column-all-items-recomposes-when-a-single-item-update
     fun onLikeClick(article: Article) {
         viewModelScope.launch {
-            val parameters = article.copy(liked = !article.liked)
-            when (val result = likeArticleUsecase(parameters)) {
+            when (val result = likeArticleUsecase(article)) {
                 is Resource.Success -> {
                     val index = articles.indexOfFirst { it.url == result.data.url }
                     _articles[index] = result.data
                 }
 
-                is Resource.Error -> Log.e("MainViewModel", "Error: ${result.error}")
+                is Resource.Error ->  {
+                    MyLogger.e("MainViewModel", "Error: ${result.error}")
+                }
             }
         }
     }
