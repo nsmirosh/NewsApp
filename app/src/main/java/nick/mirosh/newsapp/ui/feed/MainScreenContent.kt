@@ -55,6 +55,7 @@ import nick.mirosh.newsapp.ui.composables.FailedMessage
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreenContent(
+    modifier: Modifier = Modifier,
     viewModel: MainViewModel = viewModel(),
     onArticleClick: (Article) -> Unit,
     onSavedArticlesClicked: () -> Unit
@@ -74,7 +75,11 @@ fun MainScreenContent(
             else -> {}
         }
     }
-    AnimatedVisibility(visible = uiState == FeedUIState.Loading, enter = fadeIn(), exit = fadeOut()) {
+    AnimatedVisibility(
+        visible = uiState == FeedUIState.Loading,
+        enter = fadeIn(),
+        exit = fadeOut()
+    ) {
         SmileyProgressAnimation()
     }
 }
@@ -83,6 +88,7 @@ fun MainScreenContent(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ArticleFeed(
+    modifier: Modifier = Modifier,
     articles: List<Article>,
     onArticleClick: (Article) -> Unit,
     onLikeClick: (Article) -> Unit,
@@ -103,7 +109,11 @@ fun ArticleFeed(
             content = {
                 LazyColumn {
                     items(articles, key = { article -> article.url }) { article ->
-                        ArticleItem(article, onArticleClick, onLikeClick)
+                        ArticleItem(
+                            article = article,
+                            onArticleClick = onArticleClick,
+                            onLikeClick = onLikeClick
+                        )
                     }
                 }
             },
@@ -127,6 +137,7 @@ fun ArticleFeed(
 
 @Composable
 fun LikeButton(
+    modifier: Modifier = Modifier,
     liked: Boolean,
     onLikeCLick: () -> Unit
 ) {
@@ -143,8 +154,10 @@ fun LikeButton(
         )
     }
 }
+
 @Composable
 fun ArticleItem(
+    modifier: Modifier = Modifier,
     article: Article,
     onArticleClick: (Article) -> Unit,
     onLikeClick: (Article) -> Unit
@@ -187,7 +200,6 @@ fun ArticleItem(
             )
 
             Spacer(modifier = Modifier.height(8.dp))
-
             LikeButton(liked = article.liked) {
                 onLikeClick(article)
             }

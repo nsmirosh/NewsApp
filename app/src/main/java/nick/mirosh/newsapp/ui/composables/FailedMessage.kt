@@ -14,7 +14,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun FailedMessage(message: String = "Failed to load articles") {
+fun FailedMessage(
+    modifier: Modifier = Modifier,
+    message: String = "Failed to load articles") {
 
     Box {
         Text(

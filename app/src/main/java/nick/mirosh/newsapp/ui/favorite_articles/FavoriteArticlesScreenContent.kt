@@ -34,7 +34,7 @@ fun FavoriteArticlesScreenContent(
     with(uiState) {
         when (this) {
             is FavoriteArticlesUIState.FavoriteArticles ->
-                Articles(articles)
+                Articles(articles = articles)
 
             is FavoriteArticlesUIState.Idle ->
                 Text(text = "Idle")
@@ -43,7 +43,7 @@ fun FavoriteArticlesScreenContent(
                 LoadingProgressBar()
 
             is FavoriteArticlesUIState.Failed ->
-                FailedMessage("Could not load favorite articles")
+                FailedMessage(message = "Could not load favorite articles")
 
             is FavoriteArticlesUIState.FavoriteArticlesEmpty -> NoArticles()
         }
@@ -51,7 +51,10 @@ fun FavoriteArticlesScreenContent(
 }
 
 @Composable
-fun Articles(articles: List<Article>) {
+fun Articles(
+    modifier: Modifier = Modifier,
+    articles: List<Article>
+) {
     LazyColumn {
         items(articles.size) { index ->
             val article = articles[index]
@@ -83,9 +86,11 @@ fun Articles(articles: List<Article>) {
 }
 
 @Composable
-fun NoArticles() {
+fun NoArticles(
+    modifier: Modifier = Modifier
+) {
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Text(

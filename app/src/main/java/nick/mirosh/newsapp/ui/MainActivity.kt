@@ -59,18 +59,15 @@ class MainActivity : ComponentActivity() {
                             route = Details.routeWithArgs,
                             arguments = Details.arguments
                         ) {
-                            val articleUrl =
-                                it.arguments?.getString(Details.articleArg)
-
-                            DetailsScreenContent(articleUrl = articleUrl.orEmpty())
+                            DetailsScreenContent(
+                                articleUrl = it.arguments?.getString(Details.articleArg).orEmpty()
+                            )
                         }
 
                         composable(
                             route = FavoriteArticles.route,
                         ) {
-                            val viewModel = hiltViewModel<FavoriteArticlesViewModel>()
-
-                            FavoriteArticlesScreenContent(viewModel = viewModel)
+                            FavoriteArticlesScreenContent(viewModel = hiltViewModel())
                         }
                     }
                 }

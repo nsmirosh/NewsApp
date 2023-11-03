@@ -30,7 +30,9 @@ enum class AnimationState {
 }
 
 @Composable
-fun SmileyProgressAnimation() {
+fun SmileyProgressAnimation(
+    modifier: Modifier = Modifier
+) {
     var animationState by remember {
         mutableStateOf(AnimationState.INITIAL)
     }
