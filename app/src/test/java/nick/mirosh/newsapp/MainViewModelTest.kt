@@ -10,6 +10,9 @@ import nick.mirosh.newsapp.domain.Resource
 import nick.mirosh.newsapp.domain.models.Article
 import nick.mirosh.newsapp.domain.usecase.articles.FetchArticlesUsecase
 import nick.mirosh.newsapp.domain.usecase.articles.LikeArticleUsecase
+import nick.mirosh.newsapp.helpers.MainDispatcherRule
+import nick.mirosh.newsapp.helpers.likedArticle
+import nick.mirosh.newsapp.helpers.notLikedArticle
 import nick.mirosh.newsapp.ui.MainViewModel
 import nick.mirosh.newsapp.ui.feed.FeedUIState
 import org.junit.Assert.assertEquals
@@ -123,25 +126,4 @@ class MainViewModelTest {
         )
     }
 
-    private val notLikedArticle = Article(
-        author = "author",
-        content = "content",
-        description = "description",
-        publishedAt = "publishedAt",
-        title = "title",
-        url = "url",
-        urlToImage = "urlToImage",
-        liked = false,
-    )
-
-    private val likedArticle = Article(
-        author = "author",
-        content = "content",
-        description = "description",
-        publishedAt = "publishedAt",
-        title = "title",
-        url = "url",
-        urlToImage = "urlToImage",
-        liked = true,
-    )
 }

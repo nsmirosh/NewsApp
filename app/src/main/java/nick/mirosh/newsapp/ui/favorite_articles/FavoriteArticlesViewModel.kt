@@ -1,6 +1,5 @@
 package nick.mirosh.newsapp.ui.favorite_articles
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -9,6 +8,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import nick.mirosh.newsapp.domain.Resource
 import nick.mirosh.newsapp.domain.usecase.articles.FetchFavoriteArticlesUsecase
+import nick.mirosh.newsapp.utils.MyLogger
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,8 +28,10 @@ class FavoriteArticlesViewModel @Inject constructor(
                     else
                         FavoriteArticlesUIState.FavoriteArticles(result.data)
 
-                is Resource.Error ->
-                    Log.e("FavoriteArticlesViewModel", "Error = ${result.error}")
+                is Resource.Error -> {
+                    _uiState.value = FavoriteArticlesUIState.Failed
+                    MyLogger.e("FavoriteArticlesViewModel", "Error = ${result.error}")
+                }
             }
         }
     }

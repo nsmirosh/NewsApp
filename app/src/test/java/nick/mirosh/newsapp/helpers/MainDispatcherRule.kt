@@ -1,4 +1,4 @@
-package nick.mirosh.newsapp
+package nick.mirosh.newsapp.helpers
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
