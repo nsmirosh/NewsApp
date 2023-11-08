@@ -12,6 +12,7 @@ import nick.mirosh.newsapp.domain.Resource
 import nick.mirosh.newsapp.domain.feed.usecase.FetchArticlesUsecase
 import nick.mirosh.newsapp.domain.feed.usecase.LikeArticleUsecase
 import nick.mirosh.newsapp.domain.feed.model.Article
+import nick.mirosh.newsapp.domain.network.usecase.NetworkConnectivityUseCase
 import nick.mirosh.newsapp.ui.feed.FeedUIState
 import nick.mirosh.newsapp.utils.MyLogger
 import javax.inject.Inject
@@ -20,6 +21,7 @@ import javax.inject.Inject
 class FeedViewModel @Inject constructor(
     private val fetchArticlesUsecase: FetchArticlesUsecase,
     private val likeArticleUsecase: LikeArticleUsecase,
+    private val networkConnectivityUseCase: NetworkConnectivityUseCase
 ) : ViewModel() {
 
     private val _articles = mutableStateListOf<Article>()
@@ -29,28 +31,28 @@ class FeedViewModel @Inject constructor(
     val uiState: StateFlow<FeedUIState> = _uiState
 
     init {
-        fetchArticles()
+        viewModelScope.launch {
+            networkConnectivityUseCase().collect { isNetworkAvailable ->
+                if (isNetworkAvailable) {
+                    fetchArticles()
+                } else {
+                    _uiState.value = FeedUIState.NoNetworkConnection
+                }
+            }
+        }
     }
 
     private fun fetchArticles() {
         viewModelScope.launch {
             _uiState.value = FeedUIState.Loading
-            //Just adding this for now to demonstrate the smiley loading animation
-            delay(2000)
 
-            val result = fetchArticlesUsecase()
-            _uiState.value = FeedUIState.Idle
-            //adding a delay to demonstrate the smiley loading animation fade out
-            delay(400)
-
-            _uiState.value = when (result) {
+            _uiState.value = when (val result = fetchArticlesUsecase()) {
                 is Resource.Success -> {
                     _articles.clear()
                     _articles.addAll(result.data)
                     FeedUIState.Feed(articles)
                 }
-
-                else -> FeedUIState.Failed
+                is Resource.Error -> FeedUIState.Failed
             }
         }
     }
@@ -64,7 +66,7 @@ class FeedViewModel @Inject constructor(
                     _articles[index] = result.data
                 }
 
-                is Resource.Error ->  {
+                is Resource.Error -> {
                     MyLogger.e("MainViewModel", "Error: ${result.error}")
                 }
             }

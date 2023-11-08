@@ -71,15 +71,10 @@ fun MainScreenContent(
                     onSavedArticlesClicked = onSavedArticlesClicked
                 )
 
+            is FeedUIState.NoNetworkConnection -> FailedMessage()
+            is FeedUIState.Loading -> SmileyProgressAnimation()
             else -> {}
         }
-    }
-    AnimatedVisibility(
-        visible = uiState == FeedUIState.Loading,
-        enter = fadeIn(),
-        exit = fadeOut()
-    ) {
-        SmileyProgressAnimation()
     }
 }
 
