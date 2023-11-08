@@ -1,6 +1,5 @@
 package nick.mirosh.newsapp.ui
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,15 +9,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import nick.mirosh.newsapp.domain.Resource
-import nick.mirosh.newsapp.domain.usecase.articles.FetchArticlesUsecase
-import nick.mirosh.newsapp.domain.usecase.articles.LikeArticleUsecase
-import nick.mirosh.newsapp.domain.models.Article
+import nick.mirosh.newsapp.domain.feed.usecase.FetchArticlesUsecase
+import nick.mirosh.newsapp.domain.feed.usecase.LikeArticleUsecase
+import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsapp.ui.feed.FeedUIState
 import nick.mirosh.newsapp.utils.MyLogger
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class FeedViewModel @Inject constructor(
     private val fetchArticlesUsecase: FetchArticlesUsecase,
     private val likeArticleUsecase: LikeArticleUsecase,
 ) : ViewModel() {

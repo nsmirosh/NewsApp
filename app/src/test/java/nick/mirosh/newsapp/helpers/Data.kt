@@ -1,6 +1,6 @@
 package nick.mirosh.newsapp.helpers
 
-import nick.mirosh.newsapp.domain.models.Article
+import nick.mirosh.newsapp.domain.feed.model.Article
 
 val notLikedArticle = Article(
     author = "author",

@@ -1,6 +1,6 @@
 package nick.mirosh.newsapp.ui.feed
 
-import nick.mirosh.newsapp.domain.models.Article
+import nick.mirosh.newsapp.domain.feed.model.Article
 
 sealed class FeedUIState {
     data class Feed(val articles: List<Article>) : FeedUIState()

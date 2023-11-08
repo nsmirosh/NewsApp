@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import nick.mirosh.newsapp.domain.ErrorType
 import nick.mirosh.newsapp.domain.Resource
-import nick.mirosh.newsapp.domain.models.Article
+import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsapp.domain.usecase.articles.FetchFavoriteArticlesUsecase
 import nick.mirosh.newsapp.helpers.MainDispatcherRule
 import nick.mirosh.newsapp.helpers.likedArticle

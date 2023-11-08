@@ -2,7 +2,6 @@ package nick.mirosh.newsapp.ui.feed
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.clickable
@@ -46,8 +45,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import nick.mirosh.newsapp.R
-import nick.mirosh.newsapp.domain.models.Article
-import nick.mirosh.newsapp.ui.MainViewModel
+import nick.mirosh.newsapp.domain.feed.model.Article
+import nick.mirosh.newsapp.ui.FeedViewModel
 import nick.mirosh.newsapp.ui.animations.SmileyProgressAnimation
 import nick.mirosh.newsapp.ui.composables.FailedMessage
 
@@ -56,7 +55,7 @@ import nick.mirosh.newsapp.ui.composables.FailedMessage
 @Composable
 fun MainScreenContent(
     modifier: Modifier = Modifier,
-    viewModel: MainViewModel = viewModel(),
+    viewModel: FeedViewModel = viewModel(),
     onArticleClick: (Article) -> Unit,
     onSavedArticlesClicked: () -> Unit
 ) {

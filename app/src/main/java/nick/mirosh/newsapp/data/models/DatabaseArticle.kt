@@ -3,7 +3,7 @@ package nick.mirosh.newsapp.data.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import nick.mirosh.newsapp.domain.models.Article
+import nick.mirosh.newsapp.domain.feed.model.Article
 
 @Entity(tableName = "articles")
 data class DatabaseArticle(

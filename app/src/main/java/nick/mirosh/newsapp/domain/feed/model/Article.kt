@@ -1,4 +1,4 @@
-package nick.mirosh.newsapp.domain.models
+package nick.mirosh.newsapp.domain.feed.model
 
 import nick.mirosh.newsapp.data.models.ArticleDTO
 import nick.mirosh.newsapp.data.models.DatabaseArticle

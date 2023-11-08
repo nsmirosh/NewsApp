@@ -3,21 +3,17 @@ package nick.mirosh.newsapp.data.repository
 import nick.mirosh.newsapp.data.database.ArticleDao
 import nick.mirosh.newsapp.domain.ErrorType
 import nick.mirosh.newsapp.domain.Resource
+import nick.mirosh.newsapp.domain.feed.repository.NewsRepository
 import nick.mirosh.newsapp.domain.mapper.news.DTOtoDatabaseArticleMapper
 import nick.mirosh.newsapp.domain.mapper.news.DatabaseToDomainArticleMapper
-import nick.mirosh.newsapp.domain.models.Article
-import nick.mirosh.newsapp.domain.models.asDatabaseModel
+import nick.mirosh.newsapp.domain.feed.model.Article
+import nick.mirosh.newsapp.domain.feed.model.asDatabaseModel
 import nick.mirosh.newsapp.utils.logStackTrace
 import javax.inject.Inject
 
 
 const val tag = "NewsRepository"
 
-interface NewsRepository {
-    suspend fun getNewsArticles(): Resource<List<Article>>
-    suspend fun getFavoriteArticles(): Resource<List<Article>>
-    suspend fun updateArticle(article: Article): Resource<Article>
-}
 
 class NewsRepositoryImpl @Inject constructor(
     private val newsRemoteDataSource: NewsRemoteDataSource? = null,

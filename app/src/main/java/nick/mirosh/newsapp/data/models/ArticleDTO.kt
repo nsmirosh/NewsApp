@@ -1,6 +1,6 @@
 package nick.mirosh.newsapp.data.models
 
-import nick.mirosh.newsapp.domain.models.Article
+import nick.mirosh.newsapp.domain.feed.model.Article
 
 data class ArticleDTO(
     val author: String? = null,

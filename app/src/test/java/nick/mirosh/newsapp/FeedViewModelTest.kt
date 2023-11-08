@@ -7,13 +7,13 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import nick.mirosh.newsapp.domain.ErrorType
 import nick.mirosh.newsapp.domain.Resource
-import nick.mirosh.newsapp.domain.models.Article
-import nick.mirosh.newsapp.domain.usecase.articles.FetchArticlesUsecase
-import nick.mirosh.newsapp.domain.usecase.articles.LikeArticleUsecase
+import nick.mirosh.newsapp.domain.feed.model.Article
+import nick.mirosh.newsapp.domain.feed.usecase.FetchArticlesUsecase
+import nick.mirosh.newsapp.domain.feed.usecase.LikeArticleUsecase
 import nick.mirosh.newsapp.helpers.MainDispatcherRule
 import nick.mirosh.newsapp.helpers.likedArticle
 import nick.mirosh.newsapp.helpers.notLikedArticle
-import nick.mirosh.newsapp.ui.MainViewModel
+import nick.mirosh.newsapp.ui.FeedViewModel
 import nick.mirosh.newsapp.ui.feed.FeedUIState
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -22,12 +22,12 @@ import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 
-class MainViewModelTest {
+class FeedViewModelTest {
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: FeedViewModel
     private lateinit var likeArticleUsecase: LikeArticleUsecase
     private lateinit var fetchArticlesUsecase: FetchArticlesUsecase
 
@@ -35,7 +35,7 @@ class MainViewModelTest {
     fun setUp() {
         fetchArticlesUsecase = mock(FetchArticlesUsecase::class.java)
         likeArticleUsecase = mock(LikeArticleUsecase::class.java)
-        viewModel = MainViewModel(fetchArticlesUsecase, likeArticleUsecase)
+        viewModel = FeedViewModel(fetchArticlesUsecase, likeArticleUsecase)
     }
 
 
@@ -47,7 +47,7 @@ class MainViewModelTest {
         `when`(fetchArticlesUsecase.invoke()).thenReturn(result)
 
         //Act
-        val viewModel = MainViewModel(fetchArticlesUsecase, likeArticleUsecase)
+        val viewModel = FeedViewModel(fetchArticlesUsecase, likeArticleUsecase)
         val emissions = viewModel.uiState.take(4).toList()
 
         //Assert
@@ -65,7 +65,7 @@ class MainViewModelTest {
         val expected = FeedUIState.Failed
 
         //Act
-        val viewModel = MainViewModel(fetchArticlesUsecase, likeArticleUsecase)
+        val viewModel = FeedViewModel(fetchArticlesUsecase, likeArticleUsecase)
 
         //Assert
         val emissions = viewModel.uiState.take(4).toList()
@@ -86,7 +86,7 @@ class MainViewModelTest {
         val expected = listOf(likedArticle)
 
         //Act
-        val viewModel = MainViewModel(fetchArticlesUsecase, likeArticleUsecase)
+        val viewModel = FeedViewModel(fetchArticlesUsecase, likeArticleUsecase)
 
         //allow for running of animations and other stuff
         delay(2500)
@@ -112,7 +112,7 @@ class MainViewModelTest {
         val expected = listOf(notLikedArticle)
 
         //Act
-        val viewModel = MainViewModel(fetchArticlesUsecase, likeArticleUsecase)
+        val viewModel = FeedViewModel(fetchArticlesUsecase, likeArticleUsecase)
 
         //allow for running of animations and other stuff
         delay(2500)
