@@ -10,6 +10,7 @@ import nick.mirosh.newsapp.domain.Resource
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsapp.domain.feed.usecase.FetchArticlesUsecase
 import nick.mirosh.newsapp.domain.feed.usecase.LikeArticleUsecase
+import nick.mirosh.newsapp.domain.network.usecase.NetworkConnectivityUseCase
 import nick.mirosh.newsapp.helpers.MainDispatcherRule
 import nick.mirosh.newsapp.helpers.likedArticle
 import nick.mirosh.newsapp.helpers.notLikedArticle
@@ -30,12 +31,14 @@ class FeedViewModelTest {
     private lateinit var viewModel: FeedViewModel
     private lateinit var likeArticleUsecase: LikeArticleUsecase
     private lateinit var fetchArticlesUsecase: FetchArticlesUsecase
+    private lateinit var networkConnectivityUseCase: NetworkConnectivityUseCase
 
     @Before
     fun setUp() {
         fetchArticlesUsecase = mock(FetchArticlesUsecase::class.java)
         likeArticleUsecase = mock(LikeArticleUsecase::class.java)
-        viewModel = FeedViewModel(fetchArticlesUsecase, likeArticleUsecase)
+        viewModel =
+            FeedViewModel(fetchArticlesUsecase, likeArticleUsecase, networkConnectivityUseCase)
     }
 
 
@@ -47,7 +50,7 @@ class FeedViewModelTest {
         `when`(fetchArticlesUsecase.invoke()).thenReturn(result)
 
         //Act
-        val viewModel = FeedViewModel(fetchArticlesUsecase, likeArticleUsecase)
+        val viewModel = FeedViewModel(fetchArticlesUsecase, likeArticleUsecase, networkConnectivityUseCase)
         val emissions = viewModel.uiState.take(4).toList()
 
         //Assert
@@ -65,7 +68,7 @@ class FeedViewModelTest {
         val expected = FeedUIState.Failed
 
         //Act
-        val viewModel = FeedViewModel(fetchArticlesUsecase, likeArticleUsecase)
+        val viewModel = FeedViewModel(fetchArticlesUsecase, likeArticleUsecase, networkConnectivityUseCase)
 
         //Assert
         val emissions = viewModel.uiState.take(4).toList()
@@ -86,7 +89,7 @@ class FeedViewModelTest {
         val expected = listOf(likedArticle)
 
         //Act
-        val viewModel = FeedViewModel(fetchArticlesUsecase, likeArticleUsecase)
+        val viewModel = FeedViewModel(fetchArticlesUsecase, likeArticleUsecase, networkConnectivityUseCase)
 
         //allow for running of animations and other stuff
         delay(2500)
@@ -112,7 +115,7 @@ class FeedViewModelTest {
         val expected = listOf(notLikedArticle)
 
         //Act
-        val viewModel = FeedViewModel(fetchArticlesUsecase, likeArticleUsecase)
+        val viewModel = FeedViewModel(fetchArticlesUsecase, likeArticleUsecase, networkConnectivityUseCase)
 
         //allow for running of animations and other stuff
         delay(2500)

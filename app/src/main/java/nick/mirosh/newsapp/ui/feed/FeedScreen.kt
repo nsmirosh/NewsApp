@@ -80,6 +80,7 @@ fun FeedScreen(
                     onLikeClick = viewModel::onLikeClick,
                     onSavedArticlesClicked = onSavedArticlesClicked
                 )
+
             is NoNetworkConnection -> NoNetworkState()
             is Loading -> SmileyProgressAnimation()
             else -> {}
@@ -168,7 +169,8 @@ fun ArticleItem(
     Row(
         modifier = Modifier
             .padding(16.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .testTag("article_item"),
         verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(

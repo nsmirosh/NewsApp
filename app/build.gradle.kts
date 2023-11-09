@@ -41,6 +41,7 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
         defaultConfig {
+            testInstrumentationRunner = "nick.mirosh.newsapp.CustomTestRunner"
             val properties = Properties()
             properties.load(project.rootProject.file("local.properties").inputStream())
             buildConfigField("String", "API_KEY", "\"${properties.getProperty("API_KEY")}\"")
@@ -53,6 +54,10 @@ android {
     }
     kotlinOptions {
         jvmTarget = "17"
+    }
+
+    hilt {
+        enableTransformForLocalTests = true
     }
     buildFeatures {
         compose = true
@@ -82,13 +87,12 @@ dependencies {
     //logging interceptor dependency
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 
-    implementation("androidx.navigation:navigation-compose:2.7.4")
+    implementation("androidx.navigation:navigation-compose:2.7.5")
 
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
 
     implementation("com.google.dagger:hilt-android:2.48.1")
     kapt("com.google.dagger:hilt-android-compiler:2.48.1")
-
 
     //depdendency for coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
@@ -101,7 +105,7 @@ dependencies {
 
 
     //Room
-    val room_version = "2.5.2"
+    val room_version = "2.6.0"
 
     implementation("androidx.room:room-runtime:$room_version")
     annotationProcessor("androidx.room:room-compiler:$room_version")
@@ -119,19 +123,26 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation("app.cash.turbine:turbine:1.0.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
     testImplementation("junit:junit:4.13.2")
+    testImplementation("org.hamcrest:hamcrest-library:2.2")
+    testImplementation("junit:junit:4.13.2")
+
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.48.1")
+
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.48.1")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
-
-    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
-    testImplementation ("app.cash.turbine:turbine:1.0.0")
-    testImplementation ("org.mockito.kotlin:mockito-kotlin:5.1.0")
-    testImplementation ("junit:junit:4.13.2")
-    testImplementation ("org.hamcrest:hamcrest-library:2.2")
+    androidTestAnnotationProcessor("com.google.dagger:hilt-android-compiler:2.48.1")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.5.4")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.5.4")
 }
 
 kapt {
