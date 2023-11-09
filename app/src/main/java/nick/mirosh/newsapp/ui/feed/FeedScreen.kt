@@ -4,10 +4,13 @@ import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -38,9 +41,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
@@ -49,11 +58,12 @@ import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsapp.ui.FeedViewModel
 import nick.mirosh.newsapp.ui.animations.SmileyProgressAnimation
 import nick.mirosh.newsapp.ui.composables.FailedMessage
-
+import nick.mirosh.newsapp.ui.theme.NewsAppTheme
+import nick.mirosh.newsapp.ui.feed.FeedUIState.*
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainScreenContent(
+fun FeedScreen(
     modifier: Modifier = Modifier,
     viewModel: FeedViewModel = viewModel(),
     onArticleClick: (Article) -> Unit,
@@ -62,17 +72,16 @@ fun MainScreenContent(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     with(uiState) {
         when (this) {
-            is FeedUIState.Failed -> FailedMessage()
-            is FeedUIState.Feed ->
+            is Failed -> FailedMessage()
+            is Feed ->
                 ArticleFeed(
                     articles = articles,
                     onArticleClick = onArticleClick,
                     onLikeClick = viewModel::onLikeClick,
                     onSavedArticlesClicked = onSavedArticlesClicked
                 )
-
-            is FeedUIState.NoNetworkConnection -> FailedMessage()
-            is FeedUIState.Loading -> SmileyProgressAnimation()
+            is NoNetworkConnection -> NoNetworkState()
+            is Loading -> SmileyProgressAnimation()
             else -> {}
         }
     }
@@ -198,5 +207,39 @@ fun ArticleItem(
                 onLikeClick(article)
             }
         }
+    }
+}
+
+@Composable
+fun NoNetworkState() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Image(
+            modifier = Modifier
+                .testTag("no_network_connection_image")
+                .padding(horizontal = 54.dp),
+            painter = painterResource(id = R.drawable.wifi),
+            contentDescription = "Network connection",
+            alignment = Alignment.Center
+        )
+        Spacer(modifier = Modifier.height(24.dp))
+        Text(
+            modifier = Modifier
+                .padding(start = 32.dp, end = 32.dp, top = 16.dp, bottom = 0.dp),
+            text = stringResource(R.string.no_network_connection),
+            textAlign = TextAlign.Center,
+            fontSize = 18.sp
+        )
+    }
+}
+
+@Preview
+@Composable
+fun NoNetworkStatePreview() {
+    NewsAppTheme {
+        NoNetworkState()
     }
 }

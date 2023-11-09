@@ -15,7 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import nick.mirosh.newsapp.ui.details.DetailsScreenContent
 import nick.mirosh.newsapp.ui.favorite_articles.FavoriteArticlesScreenContent
-import nick.mirosh.newsapp.ui.feed.MainScreenContent
+import nick.mirosh.newsapp.ui.feed.FeedScreen
 import nick.mirosh.newsapp.ui.theme.NewsAppTheme
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -24,11 +24,9 @@ import java.nio.charset.StandardCharsets
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
             NewsAppTheme {
                 val navController = rememberNavController()
-
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -39,14 +37,11 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier
                     ) {
                         composable(route = Feed.route) {
-                            val viewModel = hiltViewModel<FeedViewModel>()
-
-                            MainScreenContent(
-                                viewModel = viewModel,
+                            FeedScreen(
+                                viewModel = hiltViewModel(),
                                 onArticleClick = {
                                     val encodedUrl =
                                         URLEncoder.encode(it.url, StandardCharsets.UTF_8.toString())
-
                                     navController.navigateSingleTopTo("${Details.route}/$encodedUrl")
 
                                 },
