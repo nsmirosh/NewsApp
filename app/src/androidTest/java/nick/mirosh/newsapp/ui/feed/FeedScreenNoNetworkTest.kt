@@ -65,7 +65,6 @@ class FeedScreenNoNetworkTest {
                 }
             }
             waitForIdle()
-//            onNodeWithTag(testTag = "article_item").assertDoesNotExist()
             onNodeWithTag(testTag = "no_network_connection_image").assertIsDisplayed()
         }
     }
