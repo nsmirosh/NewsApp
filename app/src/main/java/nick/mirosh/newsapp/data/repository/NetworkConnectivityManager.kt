@@ -11,7 +11,7 @@ import nick.mirosh.newsapp.domain.network.repository.NetworkConnectivityService
 import javax.inject.Inject
 
 class NetworkConnectivityManager @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
 ) : NetworkConnectivityService {
 
     private val _isNetworkAvailable = MutableStateFlow(false)
@@ -26,7 +26,7 @@ class NetworkConnectivityManager @Inject constructor(
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) {
             super.onAvailable(network)
-            _isNetworkAvailable.value = true
+                _isNetworkAvailable.value = true
         }
 
 

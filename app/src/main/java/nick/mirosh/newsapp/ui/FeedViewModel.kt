@@ -41,18 +41,16 @@ class FeedViewModel @Inject constructor(
         }
     }
 
-    private fun fetchArticles() {
-        viewModelScope.launch {
-            _uiState.value = FeedUIState.Loading
-
-            _uiState.value = when (val result = fetchArticlesUsecase()) {
-                is Resource.Success -> {
-                    _articles.clear()
-                    _articles.addAll(result.data)
-                    FeedUIState.Feed(articles)
-                }
-                is Resource.Error -> FeedUIState.Failed
+    private suspend fun fetchArticles() {
+        _uiState.value = FeedUIState.Loading
+        _uiState.value = when (val result = fetchArticlesUsecase()) {
+            is Resource.Success -> {
+                _articles.clear()
+                _articles.addAll(result.data)
+                FeedUIState.Feed(articles)
             }
+
+            is Resource.Error -> FeedUIState.Failed
         }
     }
 
