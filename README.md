@@ -29,7 +29,3 @@ The app is written in Kotlin and uses Jetpack Compose for UI. It follows MVVM Cl
 - Testing with Turbine, Mockito, JUnit
 - CI / CD with Github Actions
 
-
-#### Trello board with the tasks: 
-
-https://trello.com/b/kBrNFsEz
