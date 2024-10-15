@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import nick.mirosh.newsapp.domain.ErrorType
-import nick.mirosh.newsapp.domain.Resource
+import nick.mirosh.newsapp.domain.Result
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsapp.domain.usecase.articles.FetchFavoriteArticlesUsecase
 import nick.mirosh.newsapp.helpers.MainDispatcherRule
@@ -35,7 +35,7 @@ class FavoriteArticlesViewModelTest {
     fun init_withEmptyArticleResponse_sends_FavoriteArticlesEmptyEvent_toTheUI() = runTest {
 
         //Arrange
-        val result = Resource.Success(listOf<Article>())
+        val result = Result.Success(listOf<Article>())
         `when`(fetchFavoriteArticlesUsecase.invoke()).thenReturn(result)
 
         //Act
@@ -52,7 +52,7 @@ class FavoriteArticlesViewModelTest {
     fun init_withEmptyArticleResponse_sends_FavoriteArticlesEvent_toTheUI() = runTest {
 
         //Arrange
-        val result = Resource.Success(listOf(likedArticle))
+        val result = Result.Success(listOf(likedArticle))
         `when`(fetchFavoriteArticlesUsecase.invoke()).thenReturn(result)
 
         //Act
@@ -69,7 +69,7 @@ class FavoriteArticlesViewModelTest {
     fun init_withEmptyArticleResponse_sends_Error_toTheUI() = runTest {
 
         //Arrange
-        val result = Resource.Error(ErrorType.General)
+        val result = Result.Error(ErrorType.General)
         `when`(fetchFavoriteArticlesUsecase.invoke()).thenReturn(result)
 
         //Act

@@ -2,7 +2,7 @@ package nick.mirosh.newsapp.data.repository
 
 import nick.mirosh.newsapp.data.database.ArticleDao
 import nick.mirosh.newsapp.domain.ErrorType
-import nick.mirosh.newsapp.domain.Resource
+import nick.mirosh.newsapp.domain.Result
 import nick.mirosh.newsapp.domain.feed.repository.NewsRepository
 import nick.mirosh.newsapp.domain.mapper.news.DTOtoDatabaseArticleMapper
 import nick.mirosh.newsapp.domain.mapper.news.DatabaseToDomainArticleMapper
@@ -21,43 +21,43 @@ class NewsRepositoryImpl @Inject constructor(
     private val databaseToDomainArticleMapper: DatabaseToDomainArticleMapper,
     private val dtoToDatabaseArticleMapper: DTOtoDatabaseArticleMapper,
 ) : NewsRepository {
-    override suspend fun getNewsArticles(): Resource<List<Article>> {
+    override suspend fun getNewsArticles(): Result<List<Article>> {
         return try {
             newsRemoteDataSource?.getHeadlines()?.let {
                 newsLocalDataSource.insertAll(dtoToDatabaseArticleMapper.map(it))
             }
-            Resource.Success(
+            Result.Success(
                 databaseToDomainArticleMapper.map(getAllArticlesFromDb())
             )
         } catch (e: Exception) {
             e.logStackTrace(tag)
-            Resource.Error(ErrorType.General)
+            Result.Error(ErrorType.General)
         }
     }
 
 
     override suspend fun getFavoriteArticles() =
         try {
-            Resource.Success(
+            Result.Success(
                 databaseToDomainArticleMapper.map(
                     newsLocalDataSource.getLikedArticles()
                 )
             )
         } catch (e: Exception) {
             e.logStackTrace(tag)
-            Resource.Error(ErrorType.General)
+            Result.Error(ErrorType.General)
         }
 
     override suspend fun updateArticle(article: Article) =
         try {
             val updatedRowId = newsLocalDataSource.insert(article.asDatabaseModel())
             if (updatedRowId != -1L)
-                Resource.Success(article)
+                Result.Success(article)
             else
-                Resource.Error(ErrorType.General)
+                Result.Error(ErrorType.General)
         } catch (e: Exception) {
             e.logStackTrace(tag)
-            Resource.Error(ErrorType.General)
+            Result.Error(ErrorType.General)
         }
 
     private suspend fun getAllArticlesFromDb() =

@@ -1,20 +1,14 @@
 package nick.mirosh.newsapp
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import nick.mirosh.newsapp.domain.ErrorType
-import nick.mirosh.newsapp.domain.Resource
+import nick.mirosh.newsapp.domain.Result
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsapp.domain.feed.usecase.FetchArticlesUsecase
 import nick.mirosh.newsapp.domain.feed.usecase.LikeArticleUsecase
@@ -58,7 +52,7 @@ class FeedViewModelTest {
     ) {
         //Arrange
         val articles = listOf<Article>()
-        val result = Resource.Success(articles)
+        val result = Result.Success(articles)
         `when`(fetchArticlesUsecase.invoke()).thenReturn(result)
         `when`(networkConnectivityUseCase.invoke()).thenReturn(flowOf(true))
 
@@ -77,7 +71,7 @@ class FeedViewModelTest {
     @Test
     fun init_getsTheArticleListWithFailure_sendsFailedEventToUI() = runTest {
         //Arrange
-        val result = Resource.Error(ErrorType.General)
+        val result = Result.Error(ErrorType.General)
         `when`(fetchArticlesUsecase.invoke()).thenReturn(result)
         `when`(networkConnectivityUseCase.invoke()).thenReturn(flowOf ( true ))
         val expected = FeedUIState.Failed
@@ -97,11 +91,11 @@ class FeedViewModelTest {
     @Test
     fun onLikeClick_withValidArticle_updatesArticlesList() = runTest {
         //Arrange
-        val fetchArticlesResult = Resource.Success(listOf(notLikedArticle))
+        val fetchArticlesResult = Result.Success(listOf(notLikedArticle))
         `when`(fetchArticlesUsecase.invoke()).thenReturn(fetchArticlesResult)
         `when`(networkConnectivityUseCase.invoke()).thenReturn(flow { emit(true) })
 
-        val result = Resource.Success(likedArticle)
+        val result = Result.Success(likedArticle)
         `when`(likeArticleUsecase.invoke(notLikedArticle)).thenReturn(result)
         val expected = listOf(likedArticle)
 
@@ -125,11 +119,11 @@ class FeedViewModelTest {
     @Test
     fun onLikeClick_withFailure_doesNotUpdateArticleList() = runTest {
         //Arrange
-        val fetchArticlesResult = Resource.Success(listOf(notLikedArticle))
+        val fetchArticlesResult = Result.Success(listOf(notLikedArticle))
         `when`(fetchArticlesUsecase.invoke()).thenReturn(fetchArticlesResult)
         `when`(networkConnectivityUseCase.invoke()).thenReturn(flow { emit(true) })
 
-        val result = Resource.Error(ErrorType.General)
+        val result = Result.Error(ErrorType.General)
         `when`(likeArticleUsecase.invoke(notLikedArticle)).thenReturn(result)
         val expected = listOf(notLikedArticle)
 

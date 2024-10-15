@@ -7,7 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import nick.mirosh.newsapp.domain.Resource
+import nick.mirosh.newsapp.domain.Result
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsapp.domain.feed.usecase.FetchArticlesUsecase
 import nick.mirosh.newsapp.domain.feed.usecase.LikeArticleUsecase
@@ -44,13 +44,13 @@ class FeedViewModel @Inject constructor(
     private suspend fun fetchArticles() {
         _uiState.value = FeedUIState.Loading
         _uiState.value = when (val result = fetchArticlesUsecase()) {
-            is Resource.Success -> {
+            is Result.Success -> {
                 _articles.clear()
                 _articles.addAll(result.data)
                 FeedUIState.Feed(articles)
             }
 
-            is Resource.Error -> FeedUIState.Failed
+            is Result.Error -> FeedUIState.Failed
         }
     }
 
@@ -58,12 +58,12 @@ class FeedViewModel @Inject constructor(
     fun onLikeClick(article: Article) {
         viewModelScope.launch {
             when (val result = likeArticleUsecase(article)) {
-                is Resource.Success -> {
+                is Result.Success -> {
                     val index = articles.indexOfFirst { it.url == result.data.url }
                     _articles[index] = result.data
                 }
 
-                is Resource.Error -> {
+                is Result.Error -> {
                     MyLogger.e("MainViewModel", "Error: ${result.error}")
                 }
             }

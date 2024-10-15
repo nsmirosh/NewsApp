@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import nick.mirosh.newsapp.domain.Resource
+import nick.mirosh.newsapp.domain.Result
 import nick.mirosh.newsapp.domain.usecase.articles.FetchFavoriteArticlesUsecase
 import nick.mirosh.newsapp.utils.MyLogger
 import javax.inject.Inject
@@ -22,13 +22,13 @@ class FavoriteArticlesViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             when (val result = fetchFavoriteArticlesUsecase()) {
-                is Resource.Success ->
+                is nick.mirosh.newsapp.domain.Resource.Result.Success ->
                     _uiState.value = if (result.data.isEmpty())
                         FavoriteArticlesUIState.FavoriteArticlesEmpty
                     else
                         FavoriteArticlesUIState.FavoriteArticles(result.data)
 
-                is Resource.Error -> {
+                is nick.mirosh.newsapp.domain.Resource.Result.Error -> {
                     _uiState.value = FavoriteArticlesUIState.Failed
                     MyLogger.e("FavoriteArticlesViewModel", "Error = ${result.error}")
                 }
