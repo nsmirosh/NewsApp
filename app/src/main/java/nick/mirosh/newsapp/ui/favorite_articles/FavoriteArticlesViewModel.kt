@@ -22,13 +22,13 @@ class FavoriteArticlesViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             when (val result = fetchFavoriteArticlesUsecase()) {
-                is nick.mirosh.newsapp.domain.Resource.Result.Success ->
+                is Result.Success ->
                     _uiState.value = if (result.data.isEmpty())
                         FavoriteArticlesUIState.FavoriteArticlesEmpty
                     else
                         FavoriteArticlesUIState.FavoriteArticles(result.data)
 
-                is nick.mirosh.newsapp.domain.Resource.Result.Error -> {
+                is Result.Error -> {
                     _uiState.value = FavoriteArticlesUIState.Failed
                     MyLogger.e("FavoriteArticlesViewModel", "Error = ${result.error}")
                 }
