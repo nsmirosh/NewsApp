@@ -17,7 +17,7 @@ import nick.mirosh.newsapp.utils.MyLogger
 class FeedViewModel (
     private val fetchArticlesUsecase: FetchArticlesUsecase,
     private val likeArticleUsecase: LikeArticleUsecase,
-//    private val networkConnectivityUseCase: NetworkConnectivityUseCase
+    private val networkConnectivityUseCase: NetworkConnectivityUseCase
 ) : ViewModel() {
 
     private val _articles = mutableStateListOf<Article>()
@@ -28,13 +28,13 @@ class FeedViewModel (
 
     init {
         viewModelScope.launch {
-/*            networkConnectivityUseCase().collect { isNetworkAvailable ->
+            networkConnectivityUseCase().collect { isNetworkAvailable ->
                 if (isNetworkAvailable) {
                     fetchArticles()
                 } else {
                     _uiState.value = FeedUIState.NoNetworkConnection
                 }
-            }*/
+            }
         }
     }
 
