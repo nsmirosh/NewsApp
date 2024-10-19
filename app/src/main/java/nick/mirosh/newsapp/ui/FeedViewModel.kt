@@ -3,7 +3,6 @@ package nick.mirosh.newsapp.ui
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -14,13 +13,11 @@ import nick.mirosh.newsapp.domain.feed.usecase.LikeArticleUsecase
 import nick.mirosh.newsapp.domain.network.usecase.NetworkConnectivityUseCase
 import nick.mirosh.newsapp.ui.feed.FeedUIState
 import nick.mirosh.newsapp.utils.MyLogger
-import javax.inject.Inject
 
-@HiltViewModel
-class FeedViewModel @Inject constructor(
+class FeedViewModel (
     private val fetchArticlesUsecase: FetchArticlesUsecase,
     private val likeArticleUsecase: LikeArticleUsecase,
-    private val networkConnectivityUseCase: NetworkConnectivityUseCase
+//    private val networkConnectivityUseCase: NetworkConnectivityUseCase
 ) : ViewModel() {
 
     private val _articles = mutableStateListOf<Article>()
@@ -31,13 +28,13 @@ class FeedViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            networkConnectivityUseCase().collect { isNetworkAvailable ->
+/*            networkConnectivityUseCase().collect { isNetworkAvailable ->
                 if (isNetworkAvailable) {
                     fetchArticles()
                 } else {
                     _uiState.value = FeedUIState.NoNetworkConnection
                 }
-            }
+            }*/
         }
     }
 

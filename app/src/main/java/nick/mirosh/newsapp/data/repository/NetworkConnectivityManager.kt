@@ -5,13 +5,11 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import nick.mirosh.newsapp.domain.network.repository.NetworkConnectivityService
-import javax.inject.Inject
 
-class NetworkConnectivityManager @Inject constructor(
-    @ApplicationContext private val context: Context,
+class NetworkConnectivityManager (
+    context: Context,
 ) : NetworkConnectivityService {
 
     private val _isNetworkAvailable = MutableStateFlow(false)

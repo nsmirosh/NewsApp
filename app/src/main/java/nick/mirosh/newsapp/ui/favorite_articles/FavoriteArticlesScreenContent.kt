@@ -22,11 +22,12 @@ import coil.compose.AsyncImage
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsapp.ui.composables.FailedMessage
 import nick.mirosh.newsapp.ui.composables.LoadingProgressBar
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun FavoriteArticlesScreenContent(
     modifier: Modifier = Modifier,
-    viewModel: FavoriteArticlesViewModel,
+    viewModel: FavoriteArticlesViewModel = koinViewModel(),
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

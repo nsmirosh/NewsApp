@@ -60,12 +60,13 @@ import nick.mirosh.newsapp.ui.animations.SmileyProgressAnimation
 import nick.mirosh.newsapp.ui.composables.FailedMessage
 import nick.mirosh.newsapp.ui.theme.NewsAppTheme
 import nick.mirosh.newsapp.ui.feed.FeedUIState.*
+import org.koin.androidx.compose.koinViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun FeedScreen(
     modifier: Modifier = Modifier,
-    viewModel: FeedViewModel = viewModel(),
+    viewModel: FeedViewModel = koinViewModel(),
     onArticleClick: (Article) -> Unit,
     onSavedArticlesClicked: () -> Unit
 ) {
@@ -75,6 +76,7 @@ fun FeedScreen(
             is Failed -> FailedMessage()
             is Feed ->
                 ArticleFeed(
+                    modifier = modifier,
                     articles = articles,
                     onArticleClick = onArticleClick,
                     onLikeClick = viewModel::onLikeClick,
@@ -110,6 +112,7 @@ fun ArticleFeed(
         exit = fadeOut(),
     ) {
         Scaffold(
+            modifier = modifier,
             content = {
                 LazyColumn {
                     items(articles, key = { article -> article.url }) { article ->
@@ -141,11 +144,12 @@ fun ArticleFeed(
 
 @Composable
 fun LikeButton(
-    modifier: Modifier = Modifier,
     liked: Boolean,
+    modifier: Modifier = Modifier,
     onLikeCLick: () -> Unit
 ) {
     IconButton(
+        modifier = modifier,
         onClick = {
             onLikeCLick()
         },

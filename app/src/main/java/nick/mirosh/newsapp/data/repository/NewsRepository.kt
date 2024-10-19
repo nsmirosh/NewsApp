@@ -9,21 +9,20 @@ import nick.mirosh.newsapp.domain.mapper.news.DatabaseToDomainArticleMapper
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsapp.domain.feed.model.asDatabaseModel
 import nick.mirosh.newsapp.utils.logStackTrace
-import javax.inject.Inject
 
 
 const val tag = "NewsRepository"
 
 
-class NewsRepositoryImpl @Inject constructor(
-    private val newsRemoteDataSource: NewsRemoteDataSource? = null,
+class NewsRepositoryImpl (
+    private val newsRemoteDataSource: NewsRemoteDataSource,
     private val newsLocalDataSource: ArticleDao,
     private val databaseToDomainArticleMapper: DatabaseToDomainArticleMapper,
     private val dtoToDatabaseArticleMapper: DTOtoDatabaseArticleMapper,
 ) : NewsRepository {
     override suspend fun getNewsArticles(): Result<List<Article>> {
         return try {
-            newsRemoteDataSource?.getHeadlines()?.let {
+            newsRemoteDataSource.getHeadlines().let {
                 newsLocalDataSource.insertAll(dtoToDatabaseArticleMapper.map(it))
             }
             Result.Success(
