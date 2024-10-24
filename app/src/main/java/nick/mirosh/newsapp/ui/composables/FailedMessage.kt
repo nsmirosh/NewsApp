@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -18,7 +19,9 @@ fun FailedMessage(
     modifier: Modifier = Modifier,
     message: String = "Failed to load articles") {
 
-    Box {
+    Box(
+        modifier = modifier,
+    ){
         Text(
             text = message,
             style = TextStyle(
@@ -32,4 +35,10 @@ fun FailedMessage(
                 .padding(16.dp)
         )
     }
+}
+
+@Composable
+@Preview
+fun FailedMessagePreview() {
+    FailedMessage()
 }

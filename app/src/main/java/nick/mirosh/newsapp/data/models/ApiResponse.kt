@@ -1,6 +1,10 @@
 package nick.mirosh.newsapp.data.models
 
-data class ApiResponse<T> (
-    val status: String,
-    val articles: List<T>
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class ApiResponse(
+    val status: String? = null,
+    val totalResults: Int? = null,
+    val articles: List<ArticleDTO>? = null
 )

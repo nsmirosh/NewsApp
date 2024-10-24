@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 fun LoadingProgressBar(
     modifier: Modifier = Modifier
 ) {
-    Box {
+    Box(modifier = modifier){
         CircularProgressIndicator(
             modifier = Modifier
                 .align(Alignment.Center)

@@ -8,6 +8,6 @@ import retrofit2.http.Query
 
 interface NewsService {
     @GET("top-headlines")
-    suspend fun getHeadlines(@Query("country") country: String): ApiResponse<ArticleDTO>
+    suspend fun getHeadlines(@Query("country") country: String): ApiResponse
 
 }

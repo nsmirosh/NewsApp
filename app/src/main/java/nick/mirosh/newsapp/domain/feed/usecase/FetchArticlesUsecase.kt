@@ -6,14 +6,13 @@ import nick.mirosh.newsapp.domain.Result
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsapp.domain.feed.repository.NewsRepository
 
-class FetchArticlesUsecase (
+class FetchArticlesUsecase(
     private val repository: NewsRepository,
     private val coroutineDispatcher: CoroutineDispatcher,
 ) {
-
-    suspend operator fun invoke(): Result<List<Article>> {
+    suspend operator fun invoke(country: String): Result<List<Article>> {
         return withContext(coroutineDispatcher) {
-            repository.getNewsArticles()
+            repository.getNewsArticles(country)
         }
     }
 }

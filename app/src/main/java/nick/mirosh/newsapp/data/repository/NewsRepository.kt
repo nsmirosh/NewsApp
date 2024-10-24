@@ -1,5 +1,6 @@
 package nick.mirosh.newsapp.data.repository
 
+import android.util.Log
 import nick.mirosh.newsapp.data.database.ArticleDao
 import nick.mirosh.newsapp.domain.ErrorType
 import nick.mirosh.newsapp.domain.Result
@@ -8,11 +9,8 @@ import nick.mirosh.newsapp.domain.mapper.news.DTOtoDatabaseArticleMapper
 import nick.mirosh.newsapp.domain.mapper.news.DatabaseToDomainArticleMapper
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsapp.domain.feed.model.asDatabaseModel
-import nick.mirosh.newsapp.utils.logStackTrace
 
-
-const val tag = "NewsRepository"
-
+const val TAG = "NewsRepository"
 
 class NewsRepositoryImpl (
     private val newsRemoteDataSource: NewsRemoteDataSource,
@@ -20,16 +18,16 @@ class NewsRepositoryImpl (
     private val databaseToDomainArticleMapper: DatabaseToDomainArticleMapper,
     private val dtoToDatabaseArticleMapper: DTOtoDatabaseArticleMapper,
 ) : NewsRepository {
-    override suspend fun getNewsArticles(): Result<List<Article>> {
+    override suspend fun getNewsArticles(country: String): Result<List<Article>> {
         return try {
-            newsRemoteDataSource.getHeadlines().let {
+            newsRemoteDataSource.getHeadlines(country).let {
                 newsLocalDataSource.insertAll(dtoToDatabaseArticleMapper.map(it))
             }
             Result.Success(
                 databaseToDomainArticleMapper.map(getAllArticlesFromDb())
             )
         } catch (e: Exception) {
-            e.logStackTrace(tag)
+            Log.e(TAG, e.message.toString())
             Result.Error(ErrorType.General)
         }
     }
@@ -43,7 +41,7 @@ class NewsRepositoryImpl (
                 )
             )
         } catch (e: Exception) {
-            e.logStackTrace(tag)
+            Log.e(TAG, e.message.toString())
             Result.Error(ErrorType.General)
         }
 
@@ -55,7 +53,7 @@ class NewsRepositoryImpl (
             else
                 Result.Error(ErrorType.General)
         } catch (e: Exception) {
-            e.logStackTrace(tag)
+            Log.e(TAG, e.message.toString())
             Result.Error(ErrorType.General)
         }
 

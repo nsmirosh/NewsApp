@@ -1,6 +1,5 @@
 package nick.mirosh.newsapp.ui.feed
 
-import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -22,7 +21,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -51,18 +49,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import nick.mirosh.newsapp.R
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsapp.ui.FeedViewModel
 import nick.mirosh.newsapp.ui.animations.SmileyProgressAnimation
 import nick.mirosh.newsapp.ui.composables.FailedMessage
+import nick.mirosh.newsapp.ui.feed.FeedUIState.Failed
+import nick.mirosh.newsapp.ui.feed.FeedUIState.Feed
+import nick.mirosh.newsapp.ui.feed.FeedUIState.Loading
+import nick.mirosh.newsapp.ui.feed.FeedUIState.NoNetworkConnection
 import nick.mirosh.newsapp.ui.theme.NewsAppTheme
-import nick.mirosh.newsapp.ui.feed.FeedUIState.*
 import org.koin.androidx.compose.koinViewModel
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun FeedScreen(
     modifier: Modifier = Modifier,
@@ -85,13 +84,11 @@ fun FeedScreen(
 
             is NoNetworkConnection -> NoNetworkState()
             is Loading -> SmileyProgressAnimation()
-            else -> {}
+            is FeedUIState.Empty -> FailedMessage(message = "No articles for this country :( ")
         }
     }
 }
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ArticleFeed(
     modifier: Modifier = Modifier,
@@ -114,7 +111,9 @@ fun ArticleFeed(
         Scaffold(
             modifier = modifier,
             content = {
-                LazyColumn {
+                LazyColumn(
+                    modifier = modifier.padding(it)
+                ) {
                     items(articles, key = { article -> article.url }) { article ->
                         ArticleItem(
                             article = article,

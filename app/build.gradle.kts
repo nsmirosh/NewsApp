@@ -5,6 +5,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
+    kotlin("plugin.serialization") version "1.9.25"
 }
 
 android {
@@ -96,8 +97,17 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle")
 
     implementation("io.coil-kt:coil-compose:2.5.0")
-    implementation ("io.insert-koin:koin-android:4.0.0")
-    implementation ("io.insert-koin:koin-androidx-compose:4.0.0")
+
+    val koin = "4.0.0"
+    implementation ("io.insert-koin:koin-android:$koin")
+    implementation ("io.insert-koin:koin-androidx-compose:$koin")
+
+    val ktor = "2.3.7"
+    implementation("io.ktor:ktor-client-core:$ktor")
+    implementation("io.ktor:ktor-client-cio:$ktor")
+    implementation("io.ktor:ktor-client-okhttp:$ktor")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktor")
 
 
     //Room

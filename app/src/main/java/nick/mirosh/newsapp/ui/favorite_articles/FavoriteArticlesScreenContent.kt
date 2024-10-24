@@ -32,14 +32,12 @@ fun FavoriteArticlesScreenContent(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    with(uiState) {
-        when (this) {
+    Box (modifier = modifier){
+        when (uiState) {
             is FavoriteArticlesUIState.FavoriteArticles ->
-                Articles(articles = articles)
-
-            is FavoriteArticlesUIState.Idle ->
-                Text(text = "Idle")
-
+                Articles(
+                    articles = (uiState as FavoriteArticlesUIState.FavoriteArticles).articles,
+                )
             is FavoriteArticlesUIState.Loading ->
                 LoadingProgressBar()
 
@@ -56,7 +54,7 @@ fun Articles(
     modifier: Modifier = Modifier,
     articles: List<Article>
 ) {
-    LazyColumn {
+    LazyColumn(modifier = modifier) {
         items(articles.size) { index ->
             val article = articles[index]
             Row(

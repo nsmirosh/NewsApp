@@ -13,7 +13,7 @@ class FavoriteArticlesViewModel (
     private val fetchFavoriteArticlesUsecase: FetchFavoriteArticlesUsecase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<FavoriteArticlesUIState>(FavoriteArticlesUIState.Idle)
+    private val _uiState = MutableStateFlow<FavoriteArticlesUIState>(FavoriteArticlesUIState.Loading)
     val uiState = _uiState.asStateFlow()
 
     init {

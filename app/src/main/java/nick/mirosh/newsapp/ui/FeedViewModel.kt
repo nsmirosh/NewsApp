@@ -14,7 +14,7 @@ import nick.mirosh.newsapp.domain.network.usecase.NetworkConnectivityUseCase
 import nick.mirosh.newsapp.ui.feed.FeedUIState
 import nick.mirosh.newsapp.utils.MyLogger
 
-class FeedViewModel (
+class FeedViewModel(
     private val fetchArticlesUsecase: FetchArticlesUsecase,
     private val likeArticleUsecase: LikeArticleUsecase,
     private val networkConnectivityUseCase: NetworkConnectivityUseCase
@@ -23,7 +23,7 @@ class FeedViewModel (
     private val _articles = mutableStateListOf<Article>()
     val articles: List<Article> = _articles
 
-    private val _uiState = MutableStateFlow<FeedUIState>(FeedUIState.Idle)
+    private val _uiState = MutableStateFlow<FeedUIState>(FeedUIState.Loading)
     val uiState: StateFlow<FeedUIState> = _uiState
 
     init {
@@ -40,11 +40,11 @@ class FeedViewModel (
 
     private suspend fun fetchArticles() {
         _uiState.value = FeedUIState.Loading
-        _uiState.value = when (val result = fetchArticlesUsecase()) {
+        _uiState.value = when (val result = fetchArticlesUsecase("ua")) {
             is Result.Success -> {
                 _articles.clear()
                 _articles.addAll(result.data)
-                FeedUIState.Feed(articles)
+                if (result.data.isNotEmpty()) FeedUIState.Feed(articles) else FeedUIState.Empty
             }
 
             is Result.Error -> FeedUIState.Failed
