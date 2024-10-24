@@ -40,7 +40,7 @@ class FeedViewModel(
 
     private suspend fun fetchArticles() {
         _uiState.value = FeedUIState.Loading
-        _uiState.value = when (val result = fetchArticlesUsecase("ua")) {
+        _uiState.value = when (val result = fetchArticlesUsecase("us")) {
             is Result.Success -> {
                 _articles.clear()
                 _articles.addAll(result.data)
