@@ -8,6 +8,7 @@ import nick.mirosh.newsapp.data.models.ArticleDTO
 
 const val ENDPOINT = "top-headlines"
 const val COUNTRY_PARAM = "country"
+
 class NewsRemoteDataSource(private val client: HttpClient) {
     suspend fun getHeadlines(country: String): List<ArticleDTO> {
         return client.get(ENDPOINT) {
