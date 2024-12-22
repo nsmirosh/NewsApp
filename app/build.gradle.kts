@@ -6,8 +6,6 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
     id("org.jetbrains.kotlin.plugin.compose")
-//    kotlin("kapt")
-//    kotlin("ksp")
     kotlin("plugin.serialization") version "2.0.21"
 }
 
@@ -111,14 +109,13 @@ dependencies {
     implementation("androidx.room:room-ktx:$room")
 
 
-    // To use Kotlin annotation processing tool (kapt)
-//    kapt("androidx.room:room-compiler:$room")
     ksp("androidx.room:room-compiler:$room")
-    val bom = "2024.12.01"
+
+    val composeBom = "2024.12.01"
 
     implementation("androidx.core:core-ktx:1.15.0")
     implementation("androidx.activity:activity-compose:1.9.3")
-    implementation(platform("androidx.compose:compose-bom:$bom"))
+    implementation(platform("androidx.compose:compose-bom:$composeBom"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
@@ -142,12 +139,8 @@ dependencies {
 
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:$bom"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:$composeBom"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.7.6")
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.6")
 }
-
-//kapt {
-//    correctErrorTypes = true
-//}

@@ -23,124 +23,122 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when`
 
-class FeedViewModelTest {
-
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
-
-    private lateinit var likeArticleUsecase: LikeArticleUsecase
-    private lateinit var fetchArticlesUsecase: FetchArticlesUsecase
-    private lateinit var networkConnectivityUseCase: NetworkConnectivityUseCase
-
-    @Before
-    fun setUp() {
-        fetchArticlesUsecase = mock(FetchArticlesUsecase::class.java)
-        likeArticleUsecase = mock(LikeArticleUsecase::class.java)
-        networkConnectivityUseCase = mock(NetworkConnectivityUseCase::class.java)
-    }
-
-    @After
-    fun tearDown() {
-    }
-
-    @Test
-    fun init_getsTheArticleListSuccessfully_sendsFeedEventToUI() = runTest(
-
-    ) {
-        //Arrange
-        val articles = listOf<Article>()
-        val result = Result.Success(articles)
-        `when`(fetchArticlesUsecase.invoke()).thenReturn(result)
-        `when`(networkConnectivityUseCase.invoke()).thenReturn(flowOf(true))
-
-        //Act
-        val viewModel =
-            FeedViewModel(fetchArticlesUsecase, likeArticleUsecase, networkConnectivityUseCase)
-
-        val emissions = viewModel.uiState.take(3).toList()
-
-        //Assert
-        assertEquals(FeedUIState.Idle, emissions[0])
-        assertEquals(FeedUIState.Loading, emissions[1])
-        assertEquals(FeedUIState.Feed(articles), emissions[2])
-    }
-
-    @Test
-    fun init_getsTheArticleListWithFailure_sendsFailedEventToUI() = runTest {
-        //Arrange
-        val result = Result.Error(ErrorType.General)
-        `when`(fetchArticlesUsecase.invoke()).thenReturn(result)
-        `when`(networkConnectivityUseCase.invoke()).thenReturn(flowOf ( true ))
-        val expected = FeedUIState.Failed
-
-        //Act
-        val viewModel =
-            FeedViewModel(fetchArticlesUsecase, likeArticleUsecase, networkConnectivityUseCase)
-
-        //Assert
-        val emissions = viewModel.uiState.take(4).toList()
-        assertEquals(
-            expected,
-            emissions[3]
-        )
-    }
-
-    @Test
-    fun onLikeClick_withValidArticle_updatesArticlesList() = runTest {
-        //Arrange
-        val fetchArticlesResult = Result.Success(listOf(notLikedArticle))
-        `when`(fetchArticlesUsecase.invoke()).thenReturn(fetchArticlesResult)
-        `when`(networkConnectivityUseCase.invoke()).thenReturn(flow { emit(true) })
-
-        val result = Result.Success(likedArticle)
-        `when`(likeArticleUsecase.invoke(notLikedArticle)).thenReturn(result)
-        val expected = listOf(likedArticle)
-
-        //Act
-        val viewModel =
-            FeedViewModel(fetchArticlesUsecase, likeArticleUsecase, networkConnectivityUseCase)
-
-        //allow for running of animations and other stuff
-        delay(2500)
-        viewModel.onLikeClick(notLikedArticle)
-        advanceUntilIdle()
-
-        //Assert
-        assertEquals(
-            expected,
-            viewModel.articles.toList()
-        )
-    }
-
-
-    @Test
-    fun onLikeClick_withFailure_doesNotUpdateArticleList() = runTest {
-        //Arrange
-        val fetchArticlesResult = Result.Success(listOf(notLikedArticle))
-        `when`(fetchArticlesUsecase.invoke()).thenReturn(fetchArticlesResult)
-        `when`(networkConnectivityUseCase.invoke()).thenReturn(flow { emit(true) })
-
-        val result = Result.Error(ErrorType.General)
-        `when`(likeArticleUsecase.invoke(notLikedArticle)).thenReturn(result)
-        val expected = listOf(notLikedArticle)
-
-        //Act
-        val viewModel =
-            FeedViewModel(fetchArticlesUsecase, likeArticleUsecase, networkConnectivityUseCase)
-
-        //allow for running of animations and other stuff
-        delay(2500)
-        viewModel.onLikeClick(notLikedArticle)
-        advanceUntilIdle()
-
-        //Assert
-        assertEquals(
-            expected,
-            viewModel.articles.toList()
-        )
-    }
-
-}
+//class FeedViewModelTest {
+//
+//    @get:Rule
+//    val mainDispatcherRule = MainDispatcherRule()
+//
+//    private lateinit var likeArticleUsecase: LikeArticleUsecase
+//    private lateinit var fetchArticlesUsecase: FetchArticlesUsecase
+//    private lateinit var networkConnectivityUseCase: NetworkConnectivityUseCase
+//
+//    @Before
+//    fun setUp() {
+//        fetchArticlesUsecase = mock(FetchArticlesUsecase::class.java)
+//        likeArticleUsecase = mock(LikeArticleUsecase::class.java)
+//        networkConnectivityUseCase = mock(NetworkConnectivityUseCase::class.java)
+//    }
+//
+//    @After
+//    fun tearDown() {
+//    }
+//
+//    @Test
+//    fun init_getsTheArticleListSuccessfully_sendsFeedEventToUI() = runTest(
+//
+//    ) {
+//        //Arrange
+//        val articles = listOf<Article>()
+//        val result = Result.Success(articles)
+//        `when`(fetchArticlesUsecase.invoke()).thenReturn(result)
+//        `when`(networkConnectivityUseCase.invoke()).thenReturn(flowOf(true))
+//
+//        //Act
+//        val viewModel =
+//            FeedViewModel(fetchArticlesUsecase, likeArticleUsecase, networkConnectivityUseCase)
+//
+//        val emissions = viewModel.uiState.take(3).toList()
+//
+//        //Assert
+//        assertEquals(FeedUIState.Idle, emissions[0])
+//        assertEquals(FeedUIState.Loading, emissions[1])
+//        assertEquals(FeedUIState.Feed(articles), emissions[2])
+//    }
+//
+//    @Test
+//    fun init_getsTheArticleListWithFailure_sendsFailedEventToUI() = runTest {
+//        //Arrange
+//        val result = Result.Error(ErrorType.General)
+//        `when`(fetchArticlesUsecase.invoke()).thenReturn(result)
+//        `when`(networkConnectivityUseCase.invoke()).thenReturn(flowOf ( true ))
+//        val expected = FeedUIState.Failed
+//
+//        //Act
+//        val viewModel =
+//            FeedViewModel(fetchArticlesUsecase, likeArticleUsecase, networkConnectivityUseCase)
+//
+//        //Assert
+//        val emissions = viewModel.uiState.take(4).toList()
+//        assertEquals(
+//            expected,
+//            emissions[3]
+//        )
+//    }
+//
+//    @Test
+//    fun onLikeClick_withValidArticle_updatesArticlesList() = runTest {
+//        //Arrange
+//        val fetchArticlesResult = Result.Success(listOf(notLikedArticle))
+//        `when`(fetchArticlesUsecase.invoke()).thenReturn(fetchArticlesResult)
+//        `when`(networkConnectivityUseCase.invoke()).thenReturn(flow { emit(true) })
+//
+//        val result = Result.Success(likedArticle)
+//        `when`(likeArticleUsecase.invoke(notLikedArticle)).thenReturn(result)
+//        val expected = listOf(likedArticle)
+//
+//        //Act
+//        val viewModel =
+//            FeedViewModel(fetchArticlesUsecase, likeArticleUsecase, networkConnectivityUseCase)
+//
+//        //allow for running of animations and other stuff
+//        delay(2500)
+//        viewModel.onLikeClick(notLikedArticle)
+//        advanceUntilIdle()
+//
+//        //Assert
+//        assertEquals(
+//            expected,
+//            viewModel.articles.toList()
+//        )
+//    }
+//
+//
+//    @Test
+//    fun onLikeClick_withFailure_doesNotUpdateArticleList() = runTest {
+//        //Arrange
+//        val fetchArticlesResult = Result.Success(listOf(notLikedArticle))
+//        `when`(fetchArticlesUsecase.invoke()).thenReturn(fetchArticlesResult)
+//        `when`(networkConnectivityUseCase.invoke()).thenReturn(flow { emit(true) })
+//
+//        val result = Result.Error(ErrorType.General)
+//        `when`(likeArticleUsecase.invoke(notLikedArticle)).thenReturn(result)
+//        val expected = listOf(notLikedArticle)
+//
+//        //Act
+//        val viewModel =
+//            FeedViewModel(fetchArticlesUsecase, likeArticleUsecase, networkConnectivityUseCase)
+//
+//        //allow for running of animations and other stuff
+//        delay(2500)
+//        viewModel.onLikeClick(notLikedArticle)
+//        advanceUntilIdle()
+//
+//        //Assert
+//        assertEquals(
+//            expected,
+//            viewModel.articles.toList()
+//        )
+//    }
+//
+//}

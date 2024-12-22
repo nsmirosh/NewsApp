@@ -2,9 +2,13 @@ package nick.mirosh.newsapp
 
 import io.mockk.coEvery
 import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import nick.mirosh.newsapp.domain.Result
 import nick.mirosh.newsapp.domain.feed.model.Article
@@ -21,18 +25,28 @@ class FavoriteArticlesViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private var fetchFavoriteArticlesUsecase: FetchFavoriteArticlesUsecase = mockk<FetchFavoriteArticlesUsecase>()
+    private var fetchFavoriteArticlesUsecase: FetchFavoriteArticlesUsecase =
+        mockk<FetchFavoriteArticlesUsecase>()
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun init_withEmptyArticleResponse_sends_FavoriteArticlesEmptyEvent_toTheUI() = runTest {
+    fun init_withEmptyArticleResponse_sends_FavoriteArticlesEmptyEvent_toTheUI() = runTest(
+        StandardTestDispatcher()
+    ) {
 
         //Arrange
-        val result = Result.Success(listOf<Article>())
-        coEvery { fetchFavoriteArticlesUsecase.invoke() } returns flowOf(result)
+        coEvery { fetchFavoriteArticlesUsecase.invoke() } returns flowOf(Result.Success(listOf()))
 
         //Act
         val viewModel = FavoriteArticlesViewModel(fetchFavoriteArticlesUsecase)
-        val emissions = viewModel.uiState.take(2).toList()
+
+        val emissions = mutableListOf<FavoriteArticlesUIState>()
+        val job = launch {
+            viewModel.uiState.take(2).toList(emissions)
+        }
+        advanceUntilIdle()
+
+        job.cancel()
 
         //Assert
         assertEquals(FavoriteArticlesUIState.Loading, emissions[0])

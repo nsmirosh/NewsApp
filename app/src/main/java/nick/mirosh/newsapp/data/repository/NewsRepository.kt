@@ -35,16 +35,14 @@ class NewsRepositoryImpl(
     }
 
 
-    override suspend fun getFavoriteArticles() = flow {
-        try {
-            newsLocalDataSource.getLikedArticles().collect {
-                emit(Result.Success(databaseToDomainArticleMapper.map(it)))
+    override fun getFavoriteArticles() =
+        newsLocalDataSource.getLikedArticles().map { articles ->
+            if (articles != null) {
+                Result.Success(databaseToDomainArticleMapper.map(articles))
+            } else {
+                Result.Error(ErrorType.General)
             }
-        } catch (e: Exception) {
-            Log.e(TAG, e.message.toString())
-            emit(Result.Error(ErrorType.General))
         }
-    }
 
     override suspend fun updateArticle(article: Article) =
         try {

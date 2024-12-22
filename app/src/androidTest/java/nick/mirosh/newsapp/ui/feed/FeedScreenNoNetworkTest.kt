@@ -9,9 +9,6 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
-import dagger.hilt.android.testing.BindValue
-import dagger.hilt.android.testing.HiltAndroidRule
-import dagger.hilt.android.testing.HiltAndroidTest
 import nick.mirosh.newsapp.HiltTestActivity
 import nick.mirosh.newsapp.di.NetworkResponseBehavior
 import nick.mirosh.newsapp.ui.theme.NewsAppTheme

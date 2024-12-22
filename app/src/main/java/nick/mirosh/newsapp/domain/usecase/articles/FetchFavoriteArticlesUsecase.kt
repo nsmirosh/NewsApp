@@ -8,7 +8,5 @@ import nick.mirosh.newsapp.domain.feed.repository.NewsRepository
 class FetchFavoriteArticlesUsecase (
     private val repository: NewsRepository,
 ) {
-
-    suspend operator fun invoke(): Flow<Result<List<Article>>> = repository.getFavoriteArticles()
-
+    operator fun invoke(): Flow<Result<List<Article>>> = repository.getFavoriteArticles()
 }
