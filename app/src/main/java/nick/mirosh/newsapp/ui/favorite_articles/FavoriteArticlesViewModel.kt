@@ -18,17 +18,20 @@ class FavoriteArticlesViewModel (
 
     init {
         viewModelScope.launch {
-            when (val result = fetchFavoriteArticlesUsecase()) {
-                is Result.Success ->
-                    _uiState.value = if (result.data.isEmpty())
-                        FavoriteArticlesUIState.FavoriteArticlesEmpty
-                    else
-                        FavoriteArticlesUIState.FavoriteArticles(result.data)
+            fetchFavoriteArticlesUsecase().collect { result ->
+                when(result) {
+                    is Result.Success ->
+                        _uiState.value = if (result.data.isEmpty())
+                            FavoriteArticlesUIState.FavoriteArticlesEmpty
+                        else
+                            FavoriteArticlesUIState.FavoriteArticles(result.data)
 
-                is Result.Error -> {
-                    _uiState.value = FavoriteArticlesUIState.Failed
-                    MyLogger.e("FavoriteArticlesViewModel", "Error = ${result.error}")
+                    is Result.Error -> {
+                        _uiState.value = FavoriteArticlesUIState.Failed
+                        MyLogger.e("FavoriteArticlesViewModel", "Error = ${result.error}")
+                    }
                 }
+
             }
         }
     }

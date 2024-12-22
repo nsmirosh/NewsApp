@@ -17,6 +17,7 @@ class NewsApplication : Application() {
             androidLogger()
             androidContext(this@NewsApplication)
             modules(appModule, networkModule, dispatcherModule, repositoryModule)
+
         }
     }
 }

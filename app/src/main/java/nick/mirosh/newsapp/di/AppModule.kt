@@ -15,7 +15,7 @@ val appModule = module {
 
     factory { FetchArticlesUsecase(get(), get(named(IO))) }
     factory { LikeArticleUsecase(get(), get(named(IO))) }
-    factory { FetchFavoriteArticlesUsecase(get(), get(named(IO))) }
+    factory { FetchFavoriteArticlesUsecase(get() ) }
     factoryOf(::NetworkConnectivityUseCase)
 
     viewModelOf(::FeedViewModel)

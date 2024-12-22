@@ -4,18 +4,21 @@ import java.util.Properties
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    kotlin("kapt")
-    kotlin("plugin.serialization") version "1.9.25"
+    id("com.google.devtools.ksp")
+    id("org.jetbrains.kotlin.plugin.compose")
+//    kotlin("kapt")
+//    kotlin("ksp")
+    kotlin("plugin.serialization") version "2.0.21"
 }
 
 android {
     namespace = "nick.mirosh.newsapp"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "nick.mirosh.newsapp"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -76,11 +79,9 @@ android {
 }
 
 dependencies {
-    implementation("androidx.navigation:navigation-compose:2.8.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
 
     // Lifecycle
-    val lifecycle = "2.8.6"
+    val lifecycle = "2.8.7"
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycle")
@@ -88,11 +89,13 @@ dependencies {
 
     implementation("io.coil-kt:coil-compose:2.5.0")
 
+    implementation("androidx.navigation:navigation-compose:2.8.5")
+
     val koin = "4.0.0"
     implementation ("io.insert-koin:koin-android:$koin")
     implementation ("io.insert-koin:koin-androidx-compose:$koin")
 
-    val ktor = "2.3.7"
+    val ktor = "3.0.2"
     implementation("io.ktor:ktor-client-core:$ktor")
     implementation("io.ktor:ktor-client-cio:$ktor")
     implementation("io.ktor:ktor-client-okhttp:$ktor")
@@ -101,19 +104,21 @@ dependencies {
 
 
     //Room
-    val room_version = "2.6.1"
+    val room= "2.6.1"
 
-    implementation("androidx.room:room-runtime:$room_version")
-    annotationProcessor("androidx.room:room-compiler:$room_version")
-    implementation("androidx.room:room-ktx:$room_version")
+    implementation("androidx.room:room-runtime:$room")
+    annotationProcessor("androidx.room:room-compiler:$room")
+    implementation("androidx.room:room-ktx:$room")
 
 
     // To use Kotlin annotation processing tool (kapt)
-    kapt("androidx.room:room-compiler:$room_version")
+//    kapt("androidx.room:room-compiler:$room")
+    ksp("androidx.room:room-compiler:$room")
+    val bom = "2024.12.01"
 
-    implementation("androidx.core:core-ktx:1.13.1")
+    implementation("androidx.core:core-ktx:1.15.0")
     implementation("androidx.activity:activity-compose:1.9.3")
-    implementation(platform("androidx.compose:compose-bom:2024.10.00"))
+    implementation(platform("androidx.compose:compose-bom:$bom"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
@@ -121,22 +126,28 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
-    testImplementation("app.cash.turbine:turbine:1.0.0")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
+
+    val coroutines = "1.10.0"
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines")
+
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.hamcrest:hamcrest-library:2.2")
-    testImplementation("junit:junit:4.13.2")
 
-    androidTestImplementation("com.google.dagger:hilt-android-testing:2.48.1")
+
+    val mockk = "1.13.14"
+    testImplementation ("io.mockk:mockk-android:$mockk")
+    testImplementation ("io.mockk:mockk-agent:$mockk")
+
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2024.10.00"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:$bom"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.7.4")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.4")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.7.6")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.6")
 }
 
-kapt {
-    correctErrorTypes = true
-}
+//kapt {
+//    correctErrorTypes = true
+//}

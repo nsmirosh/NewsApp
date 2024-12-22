@@ -1,6 +1,8 @@
 package nick.mirosh.newsapp.data.repository
 
 import android.util.Log
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import nick.mirosh.newsapp.data.database.ArticleDao
 import nick.mirosh.newsapp.domain.ErrorType
 import nick.mirosh.newsapp.domain.Result
@@ -12,7 +14,7 @@ import nick.mirosh.newsapp.domain.feed.model.asDatabaseModel
 
 const val TAG = "NewsRepository"
 
-class NewsRepositoryImpl (
+class NewsRepositoryImpl(
     private val newsRemoteDataSource: NewsRemoteDataSource,
     private val newsLocalDataSource: ArticleDao,
     private val databaseToDomainArticleMapper: DatabaseToDomainArticleMapper,
@@ -33,17 +35,16 @@ class NewsRepositoryImpl (
     }
 
 
-    override suspend fun getFavoriteArticles() =
+    override suspend fun getFavoriteArticles() = flow {
         try {
-            Result.Success(
-                databaseToDomainArticleMapper.map(
-                    newsLocalDataSource.getLikedArticles()
-                )
-            )
+            newsLocalDataSource.getLikedArticles().collect {
+                emit(Result.Success(databaseToDomainArticleMapper.map(it)))
+            }
         } catch (e: Exception) {
             Log.e(TAG, e.message.toString())
-            Result.Error(ErrorType.General)
+            emit(Result.Error(ErrorType.General))
         }
+    }
 
     override suspend fun updateArticle(article: Article) =
         try {
