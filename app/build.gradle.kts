@@ -11,12 +11,12 @@ plugins {
 
 android {
     namespace = "nick.mirosh.newsapp"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "nick.mirosh.newsapp"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -111,10 +111,12 @@ dependencies {
 
     ksp("androidx.room:room-compiler:$room")
 
-    val composeBom = "2024.12.01"
+    val composeBom = "2025.12.00"
 
-    implementation("androidx.core:core-ktx:1.15.0")
-    implementation("androidx.activity:activity-compose:1.9.3")
+    implementation("androidx.compose.material:material-icons-core:1.7.8")
+
+    implementation("androidx.core:core-ktx:1.17.0")
+    implementation("androidx.activity:activity-compose:1.12.1")
     implementation(platform("androidx.compose:compose-bom:$composeBom"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
