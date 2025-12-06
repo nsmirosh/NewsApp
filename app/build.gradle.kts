@@ -6,7 +6,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
     id("org.jetbrains.kotlin.plugin.compose")
-    kotlin("plugin.serialization") version "2.0.21"
+    kotlin("plugin.serialization") version "2.1.21"
 }
 
 android {
@@ -77,9 +77,12 @@ android {
 }
 
 dependencies {
+    val nav3Core = "1.0.0"
+    implementation("androidx.navigation3:navigation3-runtime:$nav3Core")
+    implementation("androidx.navigation3:navigation3-ui:$nav3Core")
 
     // Lifecycle
-    val lifecycle = "2.8.7"
+    val lifecycle = "2.10.0"
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycle")
@@ -87,13 +90,13 @@ dependencies {
 
     implementation("io.coil-kt:coil-compose:2.5.0")
 
-    implementation("androidx.navigation:navigation-compose:2.8.5")
+//    implementation("androidx.navigation:navigation-compose:2.8.5")
 
     val koin = "4.0.0"
-    implementation ("io.insert-koin:koin-android:$koin")
-    implementation ("io.insert-koin:koin-androidx-compose:$koin")
+    implementation("io.insert-koin:koin-android:$koin")
+    implementation("io.insert-koin:koin-androidx-compose:$koin")
 
-    val ktor = "3.0.2"
+    val ktor = "3.3.3"
     implementation("io.ktor:ktor-client-core:$ktor")
     implementation("io.ktor:ktor-client-cio:$ktor")
     implementation("io.ktor:ktor-client-okhttp:$ktor")
@@ -102,7 +105,7 @@ dependencies {
 
 
     //Room
-    val room= "2.6.1"
+    val room = "2.6.1"
 
     implementation("androidx.room:room-runtime:$room")
     annotationProcessor("androidx.room:room-compiler:$room")
@@ -136,8 +139,8 @@ dependencies {
 
 
     val mockk = "1.13.14"
-    testImplementation ("io.mockk:mockk-android:$mockk")
-    testImplementation ("io.mockk:mockk-agent:$mockk")
+    testImplementation("io.mockk:mockk-android:$mockk")
+    testImplementation("io.mockk:mockk-agent:$mockk")
 
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")

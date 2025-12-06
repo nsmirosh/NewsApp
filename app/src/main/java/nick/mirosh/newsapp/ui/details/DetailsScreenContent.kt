@@ -1,5 +1,6 @@
 package nick.mirosh.newsapp.ui.details
 
+import android.util.Log
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -12,6 +13,7 @@ fun DetailsScreenContent(
     modifier: Modifier = Modifier,
     articleUrl: String = "",
 ) {
+    Log.d("DetailsScreenContent", "articleUrl = $articleUrl")
     AndroidView(factory = {
         WebView(it).apply {
             layoutParams = ViewGroup.LayoutParams(

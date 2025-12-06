@@ -3,71 +3,65 @@ package nick.mirosh.newsapp.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
+import androidx.navigation3.runtime.NavEntry
+import androidx.navigation3.ui.NavDisplay
 import nick.mirosh.newsapp.ui.details.DetailsScreenContent
 import nick.mirosh.newsapp.ui.favorite_articles.FavoriteArticlesScreenContent
 import nick.mirosh.newsapp.ui.feed.FeedScreen
-import nick.mirosh.newsapp.ui.theme.NewsAppTheme
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            NewsAppTheme {
-                val navController = rememberNavController()
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    NavHost(
-                        navController = navController,
-                        startDestination = Feed.route,
-                        modifier = Modifier
-                    ) {
-                        composable(route = Feed.route) {
-                            FeedScreen(
-                                onArticleClick = {
-                                    val encodedUrl =
-                                        URLEncoder.encode(it.url, StandardCharsets.UTF_8.toString())
-                                    navController.navigateSingleTopTo("${Details.route}/$encodedUrl")
-
-                                },
-                                onSavedArticlesClicked = {
-                                    navController.navigateSingleTopTo(FavoriteArticles.route)
-                                })
-                        }
-                        composable(
-                            route = Details.routeWithArgs,
-                            arguments = Details.arguments
-                        ) {
-                            DetailsScreenContent(
-                                articleUrl = it.arguments?.getString(Details.articleArg).orEmpty()
-                            )
-                        }
-
-                        composable(
-                            route = FavoriteArticles.route,
-                        ) {
-                            FavoriteArticlesScreenContent()
-                        }
-                    }
-                }
-            }
+            BasicActivity()
         }
     }
 }
 
 
-fun NavHostController.navigateSingleTopTo(route: String) =
-    this.navigate(route) { launchSingleTop = true }
+
+data object NewsListKey
+data class NewsDetailsKey(val url: String)
+data object SavedArticlesKey
+
+@Composable
+fun BasicActivity() {
+
+    val backStack = remember { mutableStateListOf<Any>(NewsListKey) }
+
+    NavDisplay(
+        backStack = backStack,
+        onBack = { backStack.removeLastOrNull() },
+        entryProvider = { key ->
+            when (key) {
+                is NewsListKey -> NavEntry(key) {
+                    FeedScreen(
+                        onArticleClick = {
+                            backStack.add(NewsDetailsKey(it.url))
+
+                        },
+                        onSavedArticlesClicked = {
+                            backStack.add(SavedArticlesKey)
+                        }
+                    )
+                }
+
+                is NewsDetailsKey -> NavEntry(key) {
+                    DetailsScreenContent(articleUrl = key.url)
+                }
+                is SavedArticlesKey -> NavEntry(key) {
+                    FavoriteArticlesScreenContent()
+                }
+
+                else -> {
+                    error("Unknown route: $key")
+                }
+            }
+        }
+    )
+}
 
 
