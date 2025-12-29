@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.navigation3.runtime.NavEntry
+import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import nick.mirosh.newsapp.ui.details.DetailsScreenContent
 import nick.mirosh.newsapp.ui.favorite_articles.FavoriteArticlesScreenContent
@@ -22,7 +23,6 @@ class MainActivity : ComponentActivity() {
 }
 
 
-
 data object NewsListKey
 data class NewsDetailsKey(val url: String)
 data object SavedArticlesKey
@@ -35,30 +35,23 @@ fun BasicActivity() {
     NavDisplay(
         backStack = backStack,
         onBack = { backStack.removeLastOrNull() },
-        entryProvider = { key ->
-            when (key) {
-                is NewsListKey -> NavEntry(key) {
-                    FeedScreen(
-                        onArticleClick = {
-                            backStack.add(NewsDetailsKey(it.url))
+        entryProvider = entryProvider {
+            entry<NewsListKey> {
+                FeedScreen(
+                    onArticleClick = {
+                        backStack.add(NewsDetailsKey(it.url))
 
-                        },
-                        onSavedArticlesClicked = {
-                            backStack.add(SavedArticlesKey)
-                        }
-                    )
-                }
-
-                is NewsDetailsKey -> NavEntry(key) {
-                    DetailsScreenContent(articleUrl = key.url)
-                }
-                is SavedArticlesKey -> NavEntry(key) {
-                    FavoriteArticlesScreenContent()
-                }
-
-                else -> {
-                    error("Unknown route: $key")
-                }
+                    },
+                    onSavedArticlesClicked = {
+                        backStack.add(SavedArticlesKey)
+                    }
+                )
+            }
+            entry<NewsDetailsKey> { key ->
+                DetailsScreenContent(articleUrl = key.url)
+            }
+            entry<SavedArticlesKey> {
+                FavoriteArticlesScreenContent()
             }
         }
     )
