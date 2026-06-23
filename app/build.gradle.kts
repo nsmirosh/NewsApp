@@ -3,7 +3,6 @@ import java.util.Properties
 
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
     id("org.jetbrains.kotlin.plugin.compose")
     kotlin("plugin.serialization") version "2.1.21"
@@ -11,7 +10,7 @@ plugins {
 
 android {
     namespace = "nick.mirosh.newsapp"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "nick.mirosh.newsapp"
@@ -53,16 +52,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
 
     buildFeatures {
         compose = true
         buildConfig = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.15"
     }
     packaging {
         resources {
@@ -77,75 +70,63 @@ android {
 }
 
 dependencies {
-    val nav3Core = "1.0.0"
-    implementation("androidx.navigation3:navigation3-runtime:$nav3Core")
-    implementation("androidx.navigation3:navigation3-ui:$nav3Core")
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.navigation3.ui)
 
     // Lifecycle
-    val lifecycle = "2.10.0"
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle")
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycle")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle")
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
 
-    implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation(libs.coil.compose)
 
-//    implementation("androidx.navigation:navigation-compose:2.8.5")
 
-    val koin = "4.0.0"
-    implementation("io.insert-koin:koin-android:$koin")
-    implementation("io.insert-koin:koin-androidx-compose:$koin")
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
 
-    val ktor = "3.3.3"
-    implementation("io.ktor:ktor-client-core:$ktor")
-    implementation("io.ktor:ktor-client-cio:$ktor")
-    implementation("io.ktor:ktor-client-okhttp:$ktor")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor")
-    implementation("io.ktor:ktor-client-content-negotiation:$ktor")
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.client.content.negotiation)
 
 
     //Room
-    val room = "2.6.1"
-
-    implementation("androidx.room:room-runtime:$room")
-    annotationProcessor("androidx.room:room-compiler:$room")
-    implementation("androidx.room:room-ktx:$room")
+    implementation(libs.androidx.room.runtime)
+    annotationProcessor(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
 
 
-    ksp("androidx.room:room-compiler:$room")
+    ksp(libs.androidx.room.compiler)
 
-    val composeBom = "2025.12.00"
+    implementation(libs.androidx.compose.material.icons.core)
 
-    implementation("androidx.compose.material:material-icons-core:1.7.8")
-
-    implementation("androidx.core:core-ktx:1.17.0")
-    implementation("androidx.activity:activity-compose:1.12.1")
-    implementation(platform("androidx.compose:compose-bom:$composeBom"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.graphics)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.material3)
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
 
 
-    val coroutines = "1.10.0"
+    implementation(libs.kotlinx.coroutines.android)
+    testImplementation(libs.kotlinx.coroutines.test)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines")
-
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("org.hamcrest:hamcrest-library:2.2")
+    testImplementation(libs.junit)
+    testImplementation(libs.hamcrest.library)
 
 
-    val mockk = "1.13.14"
-    testImplementation("io.mockk:mockk-android:$mockk")
-    testImplementation("io.mockk:mockk-agent:$mockk")
+    testImplementation(libs.mockk.android)
+    testImplementation(libs.mockk.agent)
 
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:$composeBom"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.7.6")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.6")
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4.versioned)
+    debugImplementation(libs.androidx.compose.ui.test.manifest.versioned)
 }
